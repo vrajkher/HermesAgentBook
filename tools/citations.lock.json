@@ -1,0 +1,641 @@
+{
+ "sha": "18e659dfc93ef319771d51441573e3fa31b8f5b7",
+ "cites": {
+  "agents-invariants": {
+   "path": "AGENTS.md",
+   "start": 16,
+   "end": 25,
+   "needle": "Two invariants shape almost every design decision"
+  },
+  "agents-footprint": {
+   "path": "AGENTS.md",
+   "start": 58,
+   "end": 60,
+   "needle": "**Footprint ladder**"
+  },
+  "agents-facade": {
+   "path": "AGENTS.md",
+   "start": 94,
+   "end": 109,
+   "needle": "### Facade + siblings layout"
+  },
+  "agents-rejected": {
+   "path": "AGENTS.md",
+   "start": 43,
+   "end": 49,
+   "needle": "**Rejected even when well-built:**"
+  },
+  "agents-verify-intent": {
+   "path": "AGENTS.md",
+   "start": 50,
+   "end": 52,
+   "needle": "**Before you call it a bug,**"
+  },
+  "agents-tests-rule": {
+   "path": "AGENTS.md",
+   "start": 139,
+   "end": 141,
+   "needle": "- **Tests:** always `scripts/run_tests.sh`"
+  },
+  "agent-shape": {
+   "path": "agent/AGENTS.md",
+   "start": 5,
+   "end": 20,
+   "needle": "## Shape"
+  },
+  "agent-flow-invariants": {
+   "path": "agent/AGENTS.md",
+   "start": 55,
+   "end": 78,
+   "needle": "## Message-flow invariants"
+  },
+  "agent-cron-memory-doc": {
+   "path": "agent/AGENTS.md",
+   "start": 127,
+   "end": 128,
+   "needle": "Cron sessions pass `skip_memory=True` by default"
+  },
+  "readme-learning-loop": {
+   "path": "README.md",
+   "start": 19,
+   "end": 19,
+   "needle": "**The self-improving AI agent built by"
+  },
+  "readme-getting-started": {
+   "path": "README.md",
+   "start": 107,
+   "end": 119,
+   "needle": "## Getting Started"
+  },
+  "aiagent-class": {
+   "path": "run_agent.py",
+   "start": 215,
+   "end": 215,
+   "needle": "class AIAgent("
+  },
+  "aiagent-maxiter": {
+   "path": "run_agent.py",
+   "start": 242,
+   "end": 242,
+   "needle": "max_iterations: int = sys.maxsize"
+  },
+  "facade-chat": {
+   "path": "agent/turn_facade.py",
+   "start": 220,
+   "end": 222,
+   "needle": "def chat(self, message: str"
+  },
+  "loop-while": {
+   "path": "agent/conversation_loop.py",
+   "start": 1752,
+   "end": 1754,
+   "needle": "while _prelude_action != \"break\" and ("
+  },
+  "loop-branch": {
+   "path": "agent/conversation_loop.py",
+   "start": 1789,
+   "end": 1790,
+   "needle": "run_tool_round if s.assistant_message.tool_calls else finish_text_response"
+  },
+  "loop-runconv": {
+   "path": "agent/conversation_loop.py",
+   "start": 1809,
+   "end": 1832,
+   "needle": "def run_conversation("
+  },
+  "budget-doc": {
+   "path": "agent/iteration_budget.py",
+   "start": 1,
+   "end": 6,
+   "needle": "\"\"\"Per-agent iteration budget"
+  },
+  "budget-class": {
+   "path": "agent/iteration_budget.py",
+   "start": 25,
+   "end": 58,
+   "needle": "class IterationBudget:"
+  },
+  "turn-unlimited": {
+   "path": "hermes_cli/config.py",
+   "start": 1610,
+   "end": 1610,
+   "needle": "TURN_LIMIT_UNLIMITED = sys.maxsize"
+  },
+  "config-max-turns": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 67,
+   "end": 67,
+   "needle": "\"max_turns\": None,"
+  },
+  "interruptible-call": {
+   "path": "agent/chat_completion_helpers.py",
+   "start": 1258,
+   "end": 1261,
+   "needle": "def interruptible_api_call(agent, api_kwargs: dict):"
+  },
+  "prompt-parts": {
+   "path": "agent/system_prompt.py",
+   "start": 751,
+   "end": 758,
+   "needle": "def build_system_prompt_parts("
+  },
+  "prompt-volatile": {
+   "path": "agent/system_prompt.py",
+   "start": 800,
+   "end": 800,
+   "needle": "volatile_parts: list[str] = [skills_prompt"
+  },
+  "prompt-build": {
+   "path": "agent/system_prompt.py",
+   "start": 817,
+   "end": 826,
+   "needle": "def build_system_prompt(agent: Any"
+  },
+  "prompt-invalidate": {
+   "path": "agent/system_prompt.py",
+   "start": 829,
+   "end": 832,
+   "needle": "def invalidate_system_prompt(agent: Any)"
+  },
+  "prompt-identity": {
+   "path": "agent/system_prompt.py",
+   "start": 563,
+   "end": 569,
+   "needle": "def _identity_parts("
+  },
+  "prompt-default-identity": {
+   "path": "agent/prompt_builder.py",
+   "start": 160,
+   "end": 163,
+   "needle": "DEFAULT_AGENT_IDENTITY = ("
+  },
+  "prompt-soul": {
+   "path": "agent/prompt_builder.py",
+   "start": 1520,
+   "end": 1521,
+   "needle": "def load_soul_md("
+  },
+  "prompt-cache-apply": {
+   "path": "agent/prompt_caching.py",
+   "start": 367,
+   "end": 372,
+   "needle": "def apply_anthropic_cache_control("
+  },
+  "hint-cap": {
+   "path": "agent/subdirectory_hints.py",
+   "start": 26,
+   "end": 26,
+   "needle": "_MAX_HINT_CHARS = 32_000"
+  },
+  "registry-discover": {
+   "path": "tools/registry.py",
+   "start": 94,
+   "end": 110,
+   "needle": "def _module_registers_tools("
+  },
+  "registry-register": {
+   "path": "tools/registry.py",
+   "start": 845,
+   "end": 854,
+   "needle": "    def register("
+  },
+  "registry-getdefs": {
+   "path": "tools/registry.py",
+   "start": 1034,
+   "end": 1047,
+   "needle": "    def get_definitions("
+  },
+  "registry-dispatch": {
+   "path": "tools/registry.py",
+   "start": 1084,
+   "end": 1119,
+   "needle": "    def dispatch("
+  },
+  "toolsets-core": {
+   "path": "toolsets.py",
+   "start": 11,
+   "end": 36,
+   "needle": "_HERMES_CORE_TOOLS = ["
+  },
+  "todo-register": {
+   "path": "tools/todo_tool.py",
+   "start": 332,
+   "end": 336,
+   "needle": "registry.register("
+  },
+  "inline-exec": {
+   "path": "agent/inline_tool_executors.py",
+   "start": 300,
+   "end": 314,
+   "needle": "_RAW_INLINE_TOOL_EXECUTORS: dict"
+  },
+  "handle-fc": {
+   "path": "model_tools.py",
+   "start": 908,
+   "end": 925,
+   "needle": "def handle_function_call("
+  },
+  "approval-hardline": {
+   "path": "tools/approval_detection.py",
+   "start": 187,
+   "end": 192,
+   "needle": "HARDLINE_PATTERNS = ["
+  },
+  "approval-dangerous": {
+   "path": "tools/approval_detection.py",
+   "start": 589,
+   "end": 593,
+   "needle": "DANGEROUS_PATTERNS = ["
+  },
+  "approval-detect": {
+   "path": "tools/approval_detection.py",
+   "start": 2030,
+   "end": 2043,
+   "needle": "def detect_dangerous_command("
+  },
+  "memory-limits-default": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 1269,
+   "end": 1270,
+   "needle": "\"memory_char_limit\": 2200"
+  },
+  "memory-store-build": {
+   "path": "tools/memory_tool.py",
+   "start": 56,
+   "end": 56,
+   "needle": "mem_cfg.get(\"memory_char_limit\", 2200)"
+  },
+  "memory-delim": {
+   "path": "tools/memory_tool_store.py",
+   "start": 26,
+   "end": 26,
+   "needle": "ENTRY_DELIMITER = "
+  },
+  "memory-snapshot": {
+   "path": "tools/memory_tool_store.py",
+   "start": 194,
+   "end": 194,
+   "needle": "self._system_prompt_snapshot: dict[str, str]"
+  },
+  "memory-add": {
+   "path": "tools/memory_tool_store.py",
+   "start": 403,
+   "end": 414,
+   "needle": "    def add(self, target: str, content: str)"
+  },
+  "memory-format": {
+   "path": "tools/memory_tool_store.py",
+   "start": 655,
+   "end": 658,
+   "needle": "    def format_for_system_prompt("
+  },
+  "sessiondb-class": {
+   "path": "hermes_state.py",
+   "start": 476,
+   "end": 483,
+   "needle": "class SessionDB("
+  },
+  "sessiondb-fts": {
+   "path": "hermes_state_fts.py",
+   "start": 46,
+   "end": 46,
+   "needle": "CREATE VIRTUAL TABLE messages_fts USING fts5"
+  },
+  "hermes-home": {
+   "path": "hermes_constants.py",
+   "start": 206,
+   "end": 211,
+   "needle": "def get_hermes_home() -> Path:"
+  },
+  "compress-defaults": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 576,
+   "end": 590,
+   "needle": "\"threshold\": 0.50,"
+  },
+  "compress-placeholder": {
+   "path": "agent/context_compressor.py",
+   "start": 840,
+   "end": 840,
+   "needle": "_PRUNED_TOOL_PLACEHOLDER = "
+  },
+  "skills-agents": {
+   "path": "skills/AGENTS.md",
+   "start": 24,
+   "end": 35,
+   "needle": "## Authoring standards (HARDLINE"
+  },
+  "skills-curator": {
+   "path": "skills/AGENTS.md",
+   "start": 64,
+   "end": 81,
+   "needle": "## Curator (skill lifecycle)"
+  },
+  "skills-desc-limit": {
+   "path": "agent/skill_utils.py",
+   "start": 846,
+   "end": 846,
+   "needle": "SKILL_PROMPT_DESC_LIMIT = 60"
+  },
+  "gateway-authz": {
+   "path": "gateway/authz_mixin.py",
+   "start": 855,
+   "end": 857,
+   "needle": "    def _is_user_authorized("
+  },
+  "gateway-session-key": {
+   "path": "gateway/session.py",
+   "start": 722,
+   "end": 725,
+   "needle": "def build_session_key("
+  },
+  "gateway-guards": {
+   "path": "gateway/AGENTS.md",
+   "start": 19,
+   "end": 27,
+   "needle": "## The gateway has TWO message guards"
+  },
+  "cron-agents": {
+   "path": "cron/AGENTS.md",
+   "start": 20,
+   "end": 25,
+   "needle": "Hardening invariants"
+  },
+  "cron-atmostonce": {
+   "path": "cron/AGENTS.md",
+   "start": 38,
+   "end": 42,
+   "needle": "- Every recurring occurrence is accounted for"
+  },
+  "cron-agent-build": {
+   "path": "cron/scheduler.py",
+   "start": 2505,
+   "end": 2510,
+   "needle": "# Project context files only with a configured workdir; SOUL.md always."
+  },
+  "delegate-blocked": {
+   "path": "tools/delegate_tool_toolsets.py",
+   "start": 14,
+   "end": 23,
+   "needle": "DELEGATE_BLOCKED_TOOLS = frozenset("
+  },
+  "delegate-maxiter": {
+   "path": "tools/delegate_tool.py",
+   "start": 106,
+   "end": 106,
+   "needle": "DEFAULT_MAX_ITERATIONS = 250"
+  },
+  "delegate-config-default": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 1310,
+   "end": 1310,
+   "needle": "\"max_iterations\": 250,"
+  },
+  "delegate-concurrent": {
+   "path": "tools/delegate_tool_config.py",
+   "start": 19,
+   "end": 19,
+   "needle": "_DEFAULT_MAX_CONCURRENT_CHILDREN = 10"
+  },
+  "plugins-never-core": {
+   "path": "plugins/AGENTS.md",
+   "start": 7,
+   "end": 15,
+   "needle": "## Plugins never touch core"
+  },
+  "plugin-register-tool": {
+   "path": "hermes_cli/plugins_context.py",
+   "start": 272,
+   "end": 277,
+   "needle": "    def register_tool("
+  },
+  "plugin-register-hook": {
+   "path": "hermes_cli/plugins_context.py",
+   "start": 753,
+   "end": 754,
+   "needle": "    def register_hook(self, hook_name: str"
+  },
+  "doc-architecture": {
+   "path": "website/docs/developer-guide/architecture.md",
+   "start": 11,
+   "end": 14,
+   "needle": "## System Overview"
+  },
+  "doc-arch-principles": {
+   "path": "website/docs/developer-guide/architecture.md",
+   "start": 260,
+   "end": 270,
+   "needle": "## Design Principles"
+  },
+  "doc-arch-depchain": {
+   "path": "website/docs/developer-guide/architecture.md",
+   "start": 271,
+   "end": 283,
+   "needle": "## File Dependency Chain"
+  },
+  "doc-loop-lifecycle": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 59,
+   "end": 78,
+   "needle": "## Turn Lifecycle"
+  },
+  "doc-loop-alternation": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 94,
+   "end": 104,
+   "needle": "### Message Alternation Rules"
+  },
+  "doc-loop-concurrent": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 128,
+   "end": 135,
+   "needle": "### Sequential vs Concurrent"
+  },
+  "doc-loop-budget": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 180,
+   "end": 187,
+   "needle": "### Iteration Budget"
+  },
+  "doc-loop-fallback": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 188,
+   "end": 197,
+   "needle": "### Fallback Model"
+  },
+  "doc-adding-tools": {
+   "path": "website/docs/developer-guide/adding-tools.md",
+   "start": 23,
+   "end": 25,
+   "needle": "Make it a **Skill** when"
+  },
+  "doc-security-modes": {
+   "path": "website/docs/user-guide/security.md",
+   "start": 28,
+   "end": 41,
+   "needle": "### Approval Modes"
+  },
+  "doc-security-yolo": {
+   "path": "website/docs/user-guide/security.md",
+   "start": 67,
+   "end": 74,
+   "needle": "### YOLO Mode"
+  },
+  "doc-security-authz": {
+   "path": "website/docs/user-guide/security.md",
+   "start": 473,
+   "end": 482,
+   "needle": "### Authorization Check Order"
+  },
+  "doc-memory": {
+   "path": "website/docs/user-guide/features/memory.md",
+   "start": 11,
+   "end": 20,
+   "needle": "## How It Works"
+  },
+  "doc-memory-frozen": {
+   "path": "website/docs/user-guide/features/memory.md",
+   "start": 57,
+   "end": 57,
+   "needle": "**Frozen snapshot pattern:**"
+  },
+  "doc-memory-boundaries": {
+   "path": "website/docs/user-guide/features/memory.md",
+   "start": 59,
+   "end": 66,
+   "needle": "## Memory Needs Session Boundaries"
+  },
+  "doc-which-file": {
+   "path": "website/docs/user-guide/which-file-does-what.md",
+   "start": 11,
+   "end": 24,
+   "needle": "## The Master Table"
+  },
+  "doc-compress-config": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 289,
+   "end": 318,
+   "needle": "## Configuration"
+  },
+  "doc-compress-algo": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 562,
+   "end": 573,
+   "needle": "## Compression Algorithm"
+  },
+  "doc-compress-boundaries": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 596,
+   "end": 619,
+   "needle": "### Phase 2: Determine Boundaries"
+  },
+  "doc-cache": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 794,
+   "end": 811,
+   "needle": "## Prompt Caching (Anthropic)"
+  },
+  "doc-cache-patterns": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 834,
+   "end": 859,
+   "needle": "### Cache-Aware Design Patterns"
+  },
+  "doc-session-home": {
+   "path": "website/docs/developer-guide/session-storage.md",
+   "start": 16,
+   "end": 31,
+   "needle": "## Hermes home and profile isolation"
+  },
+  "doc-skills-disclosure": {
+   "path": "website/docs/user-guide/features/skills.md",
+   "start": 172,
+   "end": 193,
+   "needle": "## Progressive Disclosure"
+  },
+  "doc-skills-format": {
+   "path": "website/docs/user-guide/features/skills.md",
+   "start": 194,
+   "end": 229,
+   "needle": "## SKILL.md Format"
+  },
+  "doc-skills-agent": {
+   "path": "website/docs/user-guide/features/skills.md",
+   "start": 606,
+   "end": 625,
+   "needle": "## Agent-Managed Skills (skill_manage tool)"
+  },
+  "doc-delegation": {
+   "path": "website/docs/user-guide/features/delegation.md",
+   "start": 7,
+   "end": 11,
+   "needle": "# Subagent Delegation"
+  },
+  "doc-cron-schedule": {
+   "path": "website/docs/developer-guide/cron-internals.md",
+   "start": 22,
+   "end": 34,
+   "needle": "## Scheduling Model"
+  },
+  "doc-cron-usage": {
+   "path": "website/docs/user-guide/features/cron.md",
+   "start": 64,
+   "end": 75,
+   "needle": "/cron add \"in 30m\""
+  },
+  "doc-gateway-key": {
+   "path": "website/docs/developer-guide/gateway-internals.md",
+   "start": 688,
+   "end": 688,
+   "needle": "Resolve session key via `_session_key_for_source()`"
+  },
+  "doc-cli-gateway-client": {
+   "path": "website/docs/user-guide/cli.md",
+   "start": 175,
+   "end": 177,
+   "needle": ":::info The classic CLI is a gateway client"
+  },
+  "doc-plugin-guide": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 353,
+   "end": 368,
+   "needle": "## Step 2: Write the manifest"
+  },
+  "doc-plugin-handlers": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 887,
+   "end": 895,
+   "needle": "**Key rules for handlers:**"
+  },
+  "doc-plugin-register": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 903,
+   "end": 940,
+   "needle": "## Step 5: Write the registration"
+  },
+  "doc-plugin-hooks": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 1602,
+   "end": 1613,
+   "needle": "### Hook reference"
+  },
+  "doc-plugin-doctor": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 332,
+   "end": 351,
+   "needle": "### Validate with Plugin Doctor"
+  },
+  "doc-profiles": {
+   "path": "website/docs/user-guide/profiles.md",
+   "start": 48,
+   "end": 48,
+   "needle": "hermes profile create coder"
+  },
+  "doc-local-models": {
+   "path": "website/docs/user-guide/local-models.md",
+   "start": 171,
+   "end": 172,
+   "needle": "    base_url: http://127.0.0.1:8081/v1"
+  }
+ }
+}

@@ -1,0 +1,11 @@
+1) telegram user 111: (True, 'platform allowlist')
+1) telegram user 222: (True, 'DM pairing')
+1) telegram user 999: (False, 'default: deny')
+2) keys: agent:main:telegram:private:111 | agent:main:whatsapp:private:111
+3)
+   agent:main:telegram:private:111 ← 'હોલ શોધ' turn શરૂ
+   agent:main:telegram:private:111 ← 'અને કેટરર પણ' કતારમાં
+   agent:main:telegram:private:111 ← /stop (તરત પહોંચ્યો)
+4) t=90 : due નથી | t=100: ચાલતાં crash | restart t=101: due નથી | t=160: ચાલ્યું | કુલ runs: 1
+5) બાળકનાં tools: ['read_file', 'terminal', 'web_search']
+   બાળકની ફાઈલ: 41 સંદેશા | parent ની ફાઈલ: 6 → 7 (ફક્ત સાર ઉમેરાયો)

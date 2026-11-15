@@ -1,0 +1,8 @@
+name: mehmaan-tally
+version: 1.0.0
+description: Reconcile a wedding RSVP list with the caterer's plate count (read-only).
+author: Isha (Shubhmangal Wedding Planners)
+provides_tools:
+  - mehmaan_tally
+provides_hooks:
+  - post_tool_call

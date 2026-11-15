@@ -1,0 +1,8 @@
+1) સામાન્ય turn  : completed | model calls: 3
+   roles         : system → user → assistant → tool → tool → assistant → tool → assistant
+   tool પરિણામ ક્રમ: ['હોલ_તપાસ પૂરું (0.3s)', 'કેટરર_ફોન પૂરું (0.1s)']
+   alternation   : બરાબર
+2) budget = 2    : budget_exhausted | model calls: 2
+3) interrupt     : interrupted | model calls: 1
+4) refund        : વપરાયા 2, પાછો 1 → બાકી 2
+5) ખોટી ફાઈલ      : ભંગ: સળંગ બે 'user'

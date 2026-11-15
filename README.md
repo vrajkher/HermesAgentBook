@@ -7,6 +7,9 @@
 - **વાચક:** 12મું ધોરણ પાસ કરેલો કોઈ પણ વિદ્યાર્થી, programming ન આવડતું હોય તો પણ. [પ્રવેશ પ્રકરણ](book/pravesh-shunya-thi-shuruaat.md) શૂન્યથી શરૂ કરે છે; પ્રકરણ 7 ના અંતે તમે plugin લખો છો અને maintainer ની જેમ PR આંકો છો.
 - **API key જરૂરી નથી.** બધી labs ફક્ત Python standard library પર ચાલે છે.
 
+> 📖 **Web આવૃત્તિ — online વાંચો:** <https://claude.ai/artifact/PB9WSBnZxSWUF7Bm96eEUZ>
+> આખું પુસ્તક એક પાનામાં: રંગીન વાર્તા-ખાનાં, વિષયસૂચિ, light/dark mode, અક્ષરનું કદ નાનું-મોટું, phone પર પણ. આ પાનું [`tools/build-artifact.py`](tools/build-artifact.py) આ repository ની files પરથી બનાવે છે.
+
 > **Verification marks:** ✅ pinned source વાંચીને ચકાસ્યું · 🧪 આ પુસ્તક લખતી વખતે ચલાવીને ચકાસ્યું · ⚠️ ચકાસ્યું નથી.
 >
 > **પ્રામાણિક નોંધ:** આ પુસ્તક જ્યાં લખાયું ત્યાં Hermes Agent install કરવાની પરવાનગી નહોતી. એટલે પુસ્તકની પોતાની labs 🧪 છે; `hermes …` commands docs/source માંથી ✅ છે, પણ ચલાવેલા નથી ⚠️. વિગત: [verification log](appendix/F-verification-log.md).
@@ -100,6 +103,12 @@ python3 tools/citations.py hermes-agent
 ```
 
 આ command દરેક citation ને pinned checkout સામે ફરી pin કરે છે, reference links ફરી લખે છે, અને દરેક citation key અને relative link ચકાસે છે. Checkout વગર (`python3 tools/citations.py`) તે lock file વાપરીને ફક્ત links ચકાસે છે.
+
+Web આવૃત્તિ ફરી બનાવવા:
+
+```bash
+python3 tools/build-artifact.py book.html
+```
 
 ## License
 

@@ -1,0 +1,240 @@
+<title>Hermes Agent પુસ્તક</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500;700&family=Noto+Sans+Gujarati:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a wedding-office ledger. Fixed contents rail on the left (a select on phones),
+   one reading column, and each scene step set off as its own tinted slip. */
+:root {
+  --bg: #fbfaf6; --surface: #ffffff; --ink: #1d2a22; --muted: #5d6b62; --line: #dfe3d8;
+  --marigold: #c97a00; --marigold-soft: #fdf1d6; --bandhani: #a3195b; --bandhani-soft: #fbe6ef;
+  --mehndi: #2f6b3a; --mehndi-soft: #e6f1e4; --indigo: #2c4a8a; --indigo-soft: #e5ecf8;
+  --code-bg: #f1f3ec; --warn: #9a5a00; --warn-soft: #fff0cf;
+  --display: "Baloo Bhai 2", "Noto Sans Gujarati", "Shruti", sans-serif;
+  --body: "Noto Sans Gujarati", "Shruti", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+  --fs: 17px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141a16; --surface: #1b231e; --ink: #e8ece4; --muted: #a2ad9f; --line: #2f3a32;
+  --marigold: #f0b040; --marigold-soft: #33290f; --bandhani: #f07aa8; --bandhani-soft: #36172a;
+  --mehndi: #86c98f; --mehndi-soft: #1a2e1f; --indigo: #9db6f0; --indigo-soft: #1b2540;
+  --code-bg: #101512; --warn: #f0b040; --warn-soft: #33290f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141a16; --surface: #1b231e; --ink: #e8ece4; --muted: #a2ad9f; --line: #2f3a32;
+  --marigold: #f0b040; --marigold-soft: #33290f; --bandhani: #f07aa8; --bandhani-soft: #36172a;
+  --mehndi: #86c98f; --mehndi-soft: #1a2e1f; --indigo: #9db6f0; --indigo-soft: #1b2540;
+  --code-bg: #101512; --warn: #f0b040; --warn-soft: #33290f; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: var(--fs); line-height: 1.75 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface) }
+a { color: var(--indigo); text-underline-offset: 3px }
+a:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--bandhani); outline-offset: 2px }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line) }
+.bar-in { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-block: 8px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.brand { font-family: var(--display); font-weight: 700; font-size: 1.15rem; color: var(--bandhani); margin-right: auto; white-space: nowrap }
+.brand span { color: var(--marigold) }
+.bar select { display: none; flex: 1 1 180px; min-width: 0; font: inherit; font-size: 15px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink) }
+.btn { font: inherit; font-size: 14px; padding: 5px 11px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); cursor: pointer }
+.btn:hover { border-color: var(--marigold) }
+
+.shell { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 32px; max-width: 1180px; margin: 0 auto; padding-block: 24px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+nav.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); align-self: start; max-height: calc(100vh - 90px); overflow-y: auto; font-size: 15px; line-height: 1.4 }
+nav.rail h2 { font-family: var(--display); font-size: .8rem; letter-spacing: .08em; color: var(--muted); margin: 18px 0 6px; font-weight: 700 }
+nav.rail h2:first-child { margin-top: 0 }
+nav.rail a { display: block; padding: 6px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; border-left: 3px solid transparent }
+nav.rail a:hover { background: var(--mehndi-soft) }
+nav.rail a[aria-current="page"] { background: var(--marigold-soft); border-left-color: var(--marigold); font-weight: 600 }
+
+article { min-width: 0; max-width: 46rem }
+article h1 { font-family: var(--display); font-size: 2.1rem; line-height: 1.25; margin: 0 0 .6em; color: var(--bandhani); text-wrap: balance }
+article h2 { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; margin: 2em 0 .5em; padding-top: .5em; border-top: 2px solid var(--line); text-wrap: balance }
+article h3 { font-family: var(--display); font-size: 1.18rem; margin: 1.6em 0 .4em; color: var(--mehndi) }
+article p, article ul, article ol { margin: 0 0 1em }
+article li { margin-bottom: .3em }
+article hr { border: 0; border-top: 1px dashed var(--line); margin: 2em 0 }
+article blockquote { margin: 0 0 1.2em; padding: 10px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--muted) }
+article blockquote p:last-child { margin-bottom: 0 }
+article code { font-family: var(--mono); font-size: .86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
+article pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 1.2em }
+article pre code { background: none; padding: 0; font-size: .82em; overflow-wrap: normal }
+.tablewrap { overflow-x: auto; margin: 0 0 1.2em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: .92em; line-height: 1.5 }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line) }
+th { font-family: var(--display); font-weight: 700; background: var(--mehndi-soft); white-space: nowrap }
+tr:last-child td { border-bottom: 0 }
+td { font-variant-numeric: tabular-nums }
+
+/* scene slips */
+.slip { border-radius: 8px; padding: 14px 18px 2px; margin: 0 0 1em; border: 1px solid var(--line) }
+.slip > :last-child { margin-bottom: 12px }
+.slip-story { background: var(--marigold-soft); border-color: var(--marigold) }
+.slip-ask { background: var(--bandhani-soft); border-color: var(--bandhani) }
+.slip-code { background: var(--surface) }
+.slip-expert { background: var(--indigo-soft); border-color: var(--indigo) }
+.slip-warn { background: var(--warn-soft); border-color: var(--warn) }
+.slip pre, .slip .tablewrap { background: var(--bg) }
+.slip-code pre { background: var(--code-bg) }
+
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 1.2em; padding: 0; list-style: none; font-size: .9em }
+.flow li { background: var(--mehndi-soft); border: 1px solid var(--mehndi); border-radius: 6px; padding: 4px 10px; margin: 0 }
+.flow li + li::before { content: "→ "; color: var(--muted) }
+.filehead { font-family: var(--mono); font-size: .85em; color: var(--muted); margin: 0 0 8px }
+.pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--line) }
+.pager a { font-family: var(--display); text-decoration: none; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
+.pager a:hover { border-color: var(--marigold) }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0 }
+  nav.rail { display: none }
+  .bar select { display: block }
+  article h1 { font-size: 1.7rem }
+  .brand span { display: none }
+  .bar select { flex: 1 1 110px }
+  .bar-in { gap: 8px; flex-wrap: nowrap }
+  .btn { padding: 5px 8px }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth } }
+</style>
+
+<header class="bar"><div class="bar-in">
+  <div class="brand">Hermes Agent <span>પુસ્તક</span></div>
+  <select id="doc-select" aria-label="પ્રકરણ પસંદ કરો"></select>
+  <button class="btn" id="font-down" type="button" aria-label="અક્ષર નાના">અ−</button>
+  <button class="btn" id="font-up" type="button" aria-label="અક્ષર મોટા">અ+</button>
+</div></header>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="વિષયસૂચિ"></nav>
+  <main><article id="page"><h1>Hermes Agent: 12મા ધોરણથી Expert Developer સુધી</h1><p>પુસ્તક લોડ થાય છે…</p></article></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+(function () {
+  var DATA = /*__BOOK_DATA__*/null;
+  var docs = DATA.docs, files = DATA.files;
+  var byPath = {}, byId = {};
+  docs.forEach(function (d) { byPath[d.path] = d; byId[d.id] = d; });
+  var page = document.getElementById('page'), rail = document.getElementById('rail'), select = document.getElementById('doc-select');
+  var current = null, pendingAnchor = null;
+
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function fileId(path) { return 'f-' + path.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase(); }
+  var fileById = {};
+  Object.keys(files).forEach(function (p) { fileById[fileId(p)] = p; });
+
+  // navigation UI
+  var groups = [];
+  docs.forEach(function (d) { if (groups.indexOf(d.group) < 0) groups.push(d.group); });
+  groups.forEach(function (g) {
+    var h = document.createElement('h2'); h.textContent = g; rail.appendChild(h);
+    var og = document.createElement('optgroup'); og.label = g; select.appendChild(og);
+    docs.filter(function (d) { return d.group === g; }).forEach(function (d) {
+      var a = document.createElement('a'); a.href = '#' + d.id; a.textContent = d.label; a.dataset.id = d.id; rail.appendChild(a);
+      var o = document.createElement('option'); o.value = d.id; o.textContent = d.label; og.appendChild(o);
+    });
+  });
+  select.addEventListener('change', function () { location.hash = select.value; });
+
+  function resolve(base, rel) {
+    var parts = base.split('/'); parts.pop();
+    rel.split('/').forEach(function (seg) { if (seg === '..') parts.pop(); else if (seg && seg !== '.') parts.push(seg); });
+    return parts.join('/');
+  }
+
+  var SLIPS = [['🎬', 'story'], ['❓', 'ask'], ['💻', 'code'], ['🔬', 'expert'], ['⚠️', 'warn']];
+  function slipKind(el) {
+    if (el.tagName !== 'P') return null;
+    var t = el.textContent.trim();
+    for (var i = 0; i < SLIPS.length; i++) if (t.indexOf(SLIPS[i][0]) === 0) return SLIPS[i][1];
+    return null;
+  }
+  function groupSlips(root) {
+    var nodes = Array.prototype.slice.call(root.children), box = null;
+    nodes.forEach(function (el) {
+      var kind = slipKind(el);
+      if (kind) { box = document.createElement('div'); box.className = 'slip slip-' + kind; root.insertBefore(box, el); box.appendChild(el); if (kind === 'warn') box = null; return; }
+      if (/^H[1-6]$|^HR$/.test(el.tagName) || el.classList.contains('pager')) { box = null; return; }
+      if (box) box.appendChild(el);
+    });
+  }
+
+  function decorate(root, basePath) {
+    root.querySelectorAll('table').forEach(function (t) {
+      var w = document.createElement('div'); w.className = 'tablewrap'; t.parentNode.insertBefore(w, t); w.appendChild(t);
+    });
+    root.querySelectorAll('pre > code.language-mermaid').forEach(function (c) {
+      var labels = [], re = /[\[{]([^\]}]+)[\]}]/g, m;
+      while ((m = re.exec(c.textContent))) { var s = m[1].replace(/<br\s*\/?>/g, ' '); if (labels.indexOf(s) < 0) labels.push(s); }
+      var ol = document.createElement('ol'); ol.className = 'flow';
+      labels.forEach(function (s) { var li = document.createElement('li'); li.textContent = s; ol.appendChild(li); });
+      c.parentNode.replaceWith(ol);
+    });
+    root.querySelectorAll('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; return; }
+      if (href.charAt(0) === '#') { a.dataset.anchor = href.slice(1); return; }
+      var bits = href.split('#'), target = resolve(basePath, bits[0]).replace(/\/$/, '');
+      if (byPath[target]) { a.href = '#' + byPath[target].id; a.dataset.doc = byPath[target].id; if (bits[1]) a.dataset.anchor = bits[1]; }
+      else if (files[target]) { a.href = '#' + fileId(target); }
+      else if (target === 'labs/07-plugin/mehmaan-tally' || target === 'labs/07-plugin/fixtures' || target === 'evidence') { a.href = '#labs'; a.dataset.doc = 'labs'; }
+      else { a.removeAttribute('href'); }
+    });
+  }
+
+  page.addEventListener('click', function (e) {
+    var a = e.target.closest('a'); if (!a) return;
+    if (a.dataset.anchor) {
+      if (a.dataset.doc && a.dataset.doc !== current) { pendingAnchor = a.dataset.anchor; return; }
+      e.preventDefault();
+      var t = document.getElementById(a.dataset.anchor); if (t) t.scrollIntoView();
+    }
+  });
+
+  function pager(id) {
+    var i = docs.findIndex(function (d) { return d.id === id; }), html = '<div class="pager">';
+    html += i > 0 ? '<a href="#' + docs[i - 1].id + '">← ' + esc(docs[i - 1].label) + '</a>' : '<span></span>';
+    html += i >= 0 && i < docs.length - 1 ? '<a href="#' + docs[i + 1].id + '">' + esc(docs[i + 1].label) + ' →</a>' : '<span></span>';
+    return html + '</div>';
+  }
+
+  function show() {
+    var id = (location.hash || '#home').slice(1);
+    if (fileById[id]) {
+      var p = fileById[id];
+      page.innerHTML = '<h1>' + esc(p.split('/').pop()) + '</h1><p class="filehead">' + esc(p) + '</p><pre><code>' + esc(files[p]) + '</code></pre><div class="pager"><a href="#labs">← Labs</a><span></span></div>';
+      current = id; window.scrollTo(0, 0); return;
+    }
+    var d = byId[id] || byId.home;
+    var md = d.md.split('<!-- refs:start')[0] + '\n\n' + (d.md.split('<!-- refs:start')[1] || '').replace(/^[^\n]*\n/, '').replace('<!-- refs:end -->', '');
+    page.innerHTML = marked.parse(md, { gfm: true });
+    page.querySelectorAll('h2, h3').forEach(function (h) { if (!h.id) h.id = h.textContent.trim().toLowerCase().replace(/[^\w઀-૿]+/g, '-').replace(/^-|-$/g, ''); });
+    decorate(page, d.path);
+    if (d.id === 'labs') {
+      var list = '<h2>બધી files</h2><ul>' + Object.keys(files).map(function (p) { return '<li><a href="#' + fileId(p) + '"><code>' + esc(p) + '</code></a></li>'; }).join('') + '</ul>';
+      page.insertAdjacentHTML('beforeend', list);
+    }
+    groupSlips(page);
+    page.insertAdjacentHTML('beforeend', pager(d.id));
+    current = d.id; select.value = d.id;
+    rail.querySelectorAll('a').forEach(function (a) { if (a.dataset.id === d.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    var t = pendingAnchor && document.getElementById(pendingAnchor); pendingAnchor = null;
+    if (t) t.scrollIntoView(); else window.scrollTo(0, 0);
+  }
+
+  // font size, remembered per viewer
+  var fs = 17;
+  try { fs = parseInt(localStorage.getItem('book-fs'), 10) || 17; } catch (e) {}
+  function setFs(v) { fs = Math.max(14, Math.min(24, v)); document.documentElement.style.setProperty('--fs', fs + 'px'); try { localStorage.setItem('book-fs', String(fs)); } catch (e) {} }
+  setFs(fs);
+  document.getElementById('font-down').addEventListener('click', function () { setFs(fs - 1); });
+  document.getElementById('font-up').addEventListener('click', function () { setFs(fs + 1); });
+
+  window.addEventListener('hashchange', show);
+  show();
+})();
+</script>

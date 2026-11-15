@@ -1,0 +1,4 @@
+A) એક-એક ઓજાર : model calls 31 | context  29043 અક્ષર
+B) એક script   : model calls  2 | context     69 અક્ષર | script ની અંદર tool calls 30
+   script નું print(): કેટરર 13: ₹424 / થાળી (જૈન)
+   context 421 ગણો નાનો, model calls 29 ઓછા

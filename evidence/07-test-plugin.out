@@ -1,0 +1,10 @@
+1) નોંધાયેલાં tools: ['mehmaan_tally'] | plugin.yaml માં જાહેર: ['mehmaan_tally'] | hooks: ['post_tool_call']
+2) પરિણામ:
+     lagna      મહેમાન=18    થાળી=16    ફરક=-2    shortage
+     mehndi     મહેમાન=None  થાળી=40    ફરક=None  missing_in_rsvp
+     reception  મહેમાન=22    થાળી=22    ફરક=0     ok
+     sangeet    મહેમાન=6     થાળી=None  ફરક=None  missing_in_caterer
+   maybe (ગણ્યા નથી): 5 | all_ok: False
+3) ખૂટતો arg: Need rsvp_path and caterer_path
+3) ખૂટતી file: Cannot read input: FileNotFoundError: [Errno 2] No such file
+4) hook બે વાર ચાલ્યો, crash નથી. બધી ચકાસણી પાસ ✅

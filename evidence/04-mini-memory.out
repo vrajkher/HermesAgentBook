@@ -1,0 +1,10 @@
+1) add            : {'success': True, 'usage': '62/120'}
+   પાટી પરનો snapshot: 'સ્મિતાબેનને ટૂંકા જવાબ ગમે' ← નવી નોંધ આ session માં નથી દેખાતી
+2) મર્યાદા ઉપર     : {'success': False, 'error': 'would exceed the limit (62/120 chars)'}
+3) નવું session    : 'સ્મિતાબેનને ટૂંકા જવાબ ગમે\n§\nપટેલ લગ્ન: કેટરર જલારામ, 450 થાળી'
+4) session_search 'plates':
+      s1 | Patel wedding caterer is Jalaram, 450 plates
+      s1 | Noted: Jalaram caterer, 450 plates for 12 December
+      s3 | Change Patel wedding plates to 480
+5) compression    : 17 સંદેશા → 8 | સાફ થયેલાં tool પરિણામ: 5
+   roles          : s u a u a t u a (s=system u=user a=assistant t=tool)

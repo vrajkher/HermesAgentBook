@@ -1,0 +1,8 @@
+1) model ને દેખાતાં tools (key વગર): ['read_file', 'terminal']
+   key મૂક્યા પછી               : ['read_file', 'terminal', 'web_search']
+2) અજાણ્યું tool   : {"error": "Unknown tool: fly_drone"}
+3) handler ફાટ્યો  : {"error": "Tool execution failed: FileNotFoundError: [Errno 2] No such file or directory: '/no/such/file'"}
+4) ખરાબ schema    : Tool 'bad': schema must be a dict, got list
+5) ls -la        : safe — પૂછવાની જરૂર નથી
+5) rm -rf build/ : denied (recursive delete) — સ્મિતાબેનને પૂછ્યું
+5) rm -rf /      : BLOCKED (recursive delete of root filesystem) — સહી કે YOLO પણ નહીં ચાલે

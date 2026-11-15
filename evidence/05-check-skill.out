@@ -1,0 +1,8 @@
+description (51 અક્ષર): Reconcile a wedding guest list with caterer counts.
+પરિણામ: બધું બરાબર ✅
+બગાડેલી નકલ:
+  ✗ description 84 અક્ષર છે (મર્યાદા 60)
+  ✗ description પૂર્ણવિરામથી પૂરું નથી થતું
+  ✗ marketing શબ્દ: 'powerful'
+  ✗ marketing શબ્દ: 'comprehensive'
+  ✗ shell utility `cat` નહીં, Hermes tool `read_file` લખો

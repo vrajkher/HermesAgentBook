@@ -5,6 +5,8 @@
 > ઑફિસમાં જે ઘટના બને છે તે જ Hermes નો નિયમ છે; દરેક ઘટના પછી ઈશા એ નિયમ pinned source માં ખોલે છે.
 > પહેલાં: [પ્રકરણ 0](00-paayo-ane-pratham-run.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![એક સંદેશાની મુસાફરી: પાટી, ફોન, ચિઠ્ઠી છે કે નહીં; હોય તો ઓજાર અને ફરી ફોન, ન હોય તો જવાબ.](images/chapters/01-ek-sandesh-ni-musafari.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - **Turn** અને **iteration** નો તફાવત સમજાવી, કોઈ પણ કામમાં કેટલા model calls થયા તે ગણી શકશો.
@@ -211,6 +213,32 @@ Loop ની શરૂઆતમાં `begin_iteration` પણ interrupt તપ�
 
 🔬 **Expert નજર.** "Interruptible" Hermes ના છ design principles માંનો એક છે ([architecture][doc-arch-principles]) ✅. જે agent રોકી ન શકાય, તે **વાપરી ન શકાય**: તમે ભૂલ જુઓ અને લાચાર બેસી રહો. અને અડધો જવાબ ન લખવાનો નિયમ પ્રકરણ 4 ના મોટા સિદ્ધાંતનું પહેલું ઉદાહરણ છે: **ફાઈલમાં જે છે, તે જ model માટે સત્ય છે** — એટલે ફાઈલમાં જૂઠું કે અધૂરું કદી ન જવું જોઈએ.
 
+## દૃશ્ય 7 — ફોનની ત્રણ લાઈન, અને લાઈન ન લાગે ત્યારે
+
+🎬 શાસ્ત્રીજીના ત્રણ ફોન નંબર છે: ઘરનો, આશ્રમનો, અને એક જૂનો કાશી-ટ્રંક. દરેક લાઈનની **બોલવાની રીત** જુદી: ઘરના ફોન પર "નમસ્તે" થી શરૂ, આશ્રમમાં પહેલાં રજિસ્ટરનો નંબર, ટ્રંક પર દરેક વાક્ય "ઓવર" થી પૂરું. પણ હર્ષની **ફાઈલ એક જ** છે; ફોન લગાડતાં પહેલાં તે ફાઈલને એ લાઈનની રીતમાં વાંચે છે, અને જવાબ પાછો ઑફિસની સામાન્ય રીતમાં નોંધે છે.
+
+એક બપોરે લાઈન લાગતી નથી. હર્ષ ત્રણ વાર પ્રયત્ન કરે છે. પછી સ્મિતાબેનની યાદીમાંથી **બીજા પંડિત** ને ફોન કરે છે, અને કામ આગળ ચાલે છે.
+
+❓ "ત્રણ રીત, એક ફાઈલ? અને કેટલી વાર પ્રયત્ન કરવો તે કોણે નક્કી કર્યું?"
+
+💻 **ત્રણ API modes** ([agent loop doc — API Modes][doc-loop-apimodes]) ✅:
+
+| API mode | કોના માટે |
+|---|---|
+| `chat_completions` | OpenAI-compatible endpoints (OpenRouter, custom, મોટા ભાગના providers) |
+| `codex_responses` | OpenAI Codex / Responses API |
+| `anthropic_messages` | Native Anthropic Messages API |
+
+Doc નું મુખ્ય વાક્ય: "All three converge on the same internal message format (OpenAI-style `role`/`content`/`tool_calls` dicts) before and after API calls." — **એક ફાઈલ**, ત્રણ લાઈન. Mode નક્કી થવાનો ક્રમ: explicit `api_mode` → provider પરથી → base URL પરથી → default `chat_completions`.
+
+**કેટલી વાર?** `agent.api_max_retries`, default `3` ([config_defaults.py][api-max-retries]) ✅. તેની ઉપરની comment એક વ્યવહારુ સલાહ આપે છે: fallback providers તરફ ઝડપથી જવું હોય તો `1` રાખો.
+
+**બીજા પંડિત** — fallback ([provider runtime doc][doc-fallback-internals]) ✅. ત્રણ પ્રસંગે activate થાય છે: invalid responses ના max retries પછી; non-retryable client errors (HTTP 401, 403, 404) પર; transient errors (429, 500, 502, 503) ના max retries પછી. Activation વખતે `model`, `provider`, `base_url`, `api_mode` અને client **જગ્યાએ જ** બદલાય છે, retry count શૂન્ય થાય છે, અને loop ચાલુ રહે છે. અને એક વાર જ: `_fallback_activated = True` "prevents firing again".
+
+Doc એ પણ લખે છે કે શું fallback **નથી** કરતું ([link][doc-fallback-not]) ✅: subagents parent નો provider વારસામાં લે છે, પણ fallback config **નહીં**; auxiliary tasks ની પોતાની અલગ chain છે.
+
+🔬 **Expert નજર.** "એક આંતરિક રૂપ, કિનારે અનુવાદ" — આ પ્રકરણ 6 ના gateway નો જ નમૂનો છે, હવે model ની બાજુએ. Loop, compression, memory: કોઈને ખબર નથી કે નીચે કયો provider છે. એટલે નવો provider ઉમેરવો એટલે ફક્ત એક અનુવાદક ઉમેરવો. અને retry ની સંખ્યામાં એક ખરો tradeoff છે: વધુ retries = ટૂંકી hiccup સહન થાય, પણ ખરા outage માં વપરાશકર્તા વધુ રાહ જુએ. **કોઈ એક સાચો આંકડો નથી**; એટલે તે hardcode નથી, config છે. અને fallback પછીનો પહેલો request શૂન્ય cache સાથે જાય છે (પ્રકરણ 2): reliability ની કિંમત.
+
 ## Source map: આ ક્રમમાં ખોલો
 
 1. [agent/AGENTS.md — Shape][agent-shape] (નકશો)
@@ -220,6 +248,7 @@ Loop ની શરૂઆતમાં `begin_iteration` પણ interrupt તપ�
 5. [conversation_loop.py — tool round કે text][loop-branch] (નિર્ણય)
 6. [iteration_budget.py — `IterationBudget`][budget-class] (વાડ)
 7. [agent/AGENTS.md — Message-flow invariants][agent-flow-invariants] (નિયમો)
+8. [Agent loop doc — API Modes][doc-loop-apimodes] અને [provider runtime — fallback][doc-fallback-internals] (લાઈન ન લાગે ત્યારે)
 
 ## 🧪 Lab 1 — loop ના ચાર નિયમ, નાના રૂપમાં
 
@@ -272,7 +301,7 @@ Model એક જ જવાબમાં **ચાર** tool calls આપે છે
 
 ## ✅ સાર — ઈશાની નોટબુક
 
-### છ ઘટના, છ નિયમ
+### સાત ઘટના, સાત નિયમ
 
 | 🎬 ઘટના | 💻 નિયમ | તૂટે તો |
 |---|---|---|
@@ -282,6 +311,7 @@ Model એક જ જવાબમાં **ચાર** tool calls આપે છે
 | બે પ્રશ્ન સળંગ | Strict role alternation | Provider request reject કરે |
 | 40 ચક્કર | `IterationBudget`; grace call | અનંત loop |
 | "રોકાઈ જા!" | Interrupt; અડધો જવાબ ફાઈલમાં નહીં | Agent બેકાબૂ; history માં જૂઠ |
+| ત્રણ લાઈન, બીજા પંડિત | ત્રણ API modes, એક આંતરિક રૂપ; `api_max_retries`; fallback એક વાર | એક provider બંધ = agent બંધ |
 
 ### નવા શબ્દો
 
@@ -305,6 +335,8 @@ Turn · iteration · `run_conversation` · tool round · inline tool · alternat
 
 | પ્રશ્ન | જવાબ |
 |---|---|
+| ત્રણ API modes? | `chat_completions`, `codex_responses`, `anthropic_messages` |
+| Default retries? | `agent.api_max_retries: 3` |
 | Loop કઈ file માં? | `agent/conversation_loop.py` |
 | `chat()` શું પાછું આપે? | `run_conversation(...)["final_response"]` |
 | કયો role સળંગ આવી શકે? | ફક્ત `tool` |
@@ -334,12 +366,16 @@ Turn · iteration · `run_conversation` · tool round · inline tool · alternat
 [agent-flow-invariants]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/AGENTS.md#L55-L78
 [agent-shape]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/AGENTS.md#L5-L20
 [aiagent-maxiter]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/run_agent.py#L242
+[api-max-retries]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/config_defaults.py#L122
 [budget-class]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/iteration_budget.py#L25-L58
 [budget-doc]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/iteration_budget.py#L1-L6
 [config-max-turns]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/config_defaults.py#L67
 [delegate-maxiter]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/delegate_tool.py#L106
 [doc-arch-principles]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/architecture.md#L260-L270
+[doc-fallback-internals]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/provider-runtime.md#L184-L207
+[doc-fallback-not]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/provider-runtime.md#L208-L211
 [doc-loop-alternation]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L94-L104
+[doc-loop-apimodes]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L41-L56
 [doc-loop-budget]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L180-L187
 [doc-loop-concurrent]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L128-L135
 [doc-loop-lifecycle]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L59-L78

@@ -5,6 +5,8 @@
 > ઈશા પોતાનું પહેલું plugin બનાવે છે, પટેલ પરિવારનો ખરો પ્રશ્ન ઉકેલે છે, અને શીખે છે કે maintainer ની જેમ કેવી રીતે વિચારવું.
 > પહેલાં: [પ્રકરણ 6](06-bario-ghadiyal-shikhau.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![core ની દીવાલ અડ્યા વગર plug point થી mehmaan_tally ઓજાર, ઘંટડી (hook) અને બહારની દુકાન (MCP).](images/chapters/07-potanu-ojar-ane-mastery.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - Hermes plugin ની ચાર files લખી, tool અને hook નોંધી શકશો.
@@ -150,7 +152,27 @@ def _on_post_tool_call(tool_name, args, result, task_id, **kwargs):
 
 **2. Profiles** (પ્રકરણ 0). દરેક profile = અલગ `HERMES_HOME`: config, `.env`, memory, sessions, skills, gateway. Design principle "Profile isolation" ✅. Guide: "profiles are islands on purpose" — એટલે "profile A ની memory B માં કેમ નથી?" bug નથી.
 
-**3. MCP** (Model Context Protocol). બહારનાં tool servers ને `config.yaml` માં `mcp_servers.<name>` થી જોડો; તેમનાં tools model ને `mcp__<server>__<tool>` નામે દેખાય ✅. Footprint ladder (પ્રકરણ 3) માં MCP પાંચમું પગથિયું છે. Security: MCP subprocesses ને **filtered environment** મળે છે (આઠ સ્તરોમાંનું #5), અને `trust: untrusted` server ના write-capable calls મંજૂરી માગે છે.
+**3. MCP** (Model Context Protocol) — બહારની દુકાનની બારી. ફૂલવાળો પોતાનું ભાવપત્રક ઑફિસમાં નથી મોકલતો; તે પોતાની **બારી** ખોલે છે, અને હર્ષ ત્યાં પૂછે છે. MCP server એ જ છે: બીજું program, જે પોતાનાં tools એક સામાન્ય protocol પર આપે છે. Hermes માં તે `config.yaml` માં જોડાય છે ([MCP quick start][doc-mcp-quickstart]) ✅ ⚠️:
+
+```yaml
+mcp_servers:
+  filesystem:
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/projects"]
+```
+
+Server નાં tools registry માં **prefix** સાથે નોંધાય છે, જેથી built-in નામો સાથે ન અથડાય. Code ([mcp_tool_schema.py][mcp-prefix]) ✅:
+
+```python
+# Repository code — tools/mcp_tool_schema.py
+def mcp_prefixed_tool_name(server_name: str, tool_name: str) -> str:
+    """Registry/wire name: ``mcp__<sanitizedServer>__<sanitizedTool>``, clamped to 64 chars with a
+    stable hash suffix when the natural name is longer."""
+```
+
+⚠️ **ચોથો docs-vs-code ફરક.** MCP user doc ([link][doc-mcp-registers]) નામ `mcp_<server_name>_<tool_name>` (એક underscore) બતાવે છે, ઉદાહરણ `mcp_github_create_issue`. Code બે underscore વાપરે છે: `mcp__github__create_issue`. Plugin guide code સાથે સહમત છે. 64 અક્ષરની મર્યાદા providers ની છે; લાંબા નામને stable hash suffix મળે છે.
+
+**સુરક્ષા.** Footprint ladder (પ્રકરણ 3) માં MCP પાંચમું પગથિયું છે. MCP subprocesses ને **filtered environment** મળે છે (આઠ સ્તરોમાંનું #5), અને `trust: untrusted` server ના write-capable calls મંજૂરી માગે છે. Catalog માંથી install કરવું એટલે manifest જે કહે તે ચલાવવું: `git clone`, bootstrap commands, અને server નો પોતાનો code. Docs: Nous એ દરેક entry review કરી છે, "**but you should still read the manifest before installing**" ([trust model][doc-mcp-trust]) ✅. ઘણાં MCP servers હોય ત્યારે તેમનાં schemas Tool Search ની પેટીમાં જાય છે (પ્રકરણ 3, દૃશ્ય 8).
 
 Local model પણ એક provider છે ([local models doc][doc-local-models]) ✅ ⚠️:
 
@@ -261,6 +283,7 @@ Line 3: બે ખરાબ inputs, બે JSON errors, શૂન્ય crash. L
 5. [plugins_context.py — `register_tool()`][plugin-register-tool]
 6. [Plugin guide — Hook reference][doc-plugin-hooks]
 7. [AGENTS.md — Rejected even when well-built][agents-rejected]
+8. [mcp_tool_schema.py — `mcp_prefixed_tool_name()`][mcp-prefix] અને [MCP trust model][doc-mcp-trust]
 
 ## ✅ સાર — ઈશાની નોટબુકનું છેલ્લું પાનું
 
@@ -296,7 +319,7 @@ Plugin · manifest · `ctx` · hook · observer · MCP · fallback provider · r
 3. **Design.** "Agent દર કલાકે મારા inbox નો સાર Telegram પર મોકલે." કયા ભાગ: tool, skill, cron, plugin, MCP? દરેક પસંદગીનું કારણ.
 4. **Diagnose.** વપરાશકર્તા: "કાલથી બિલ ત્રણ ગણું છે." ઓછામાં ઓછાં ચાર શક્ય કારણ, આ પુસ્તકમાંથી.
 5. **Review.** PR: "દરેક turn પહેલાં system prompt માં હાલનો સમય update કરો." તમારો review, pinned source ના સંદર્ભ સાથે.
-6. **Honesty.** આ પુસ્તકમાં ત્રણ જગ્યાએ docs અને code જુદાં પડ્યાં. ત્રણેય કહો, અને દરેકમાં તમે શું કરશો.
+6. **Honesty.** આ પુસ્તકમાં ચાર જગ્યાએ docs અને code જુદાં પડ્યાં. ચારેય કહો, અને દરેકમાં તમે શું કરશો.
 
 જવાબો અને rubric: [પરિશિષ્ટ D](../appendix/D-lab-solutions.md#mastery).
 
@@ -340,11 +363,15 @@ Plugin · manifest · `ctx` · hook · observer · MCP · fallback provider · r
 [doc-architecture]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/architecture.md#L11-L14
 [doc-local-models]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/local-models.md#L171-L172
 [doc-loop-fallback]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/agent-loop.md#L188-L197
+[doc-mcp-quickstart]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/mcp.md#L29-L40
+[doc-mcp-registers]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/mcp.md#L569-L575
+[doc-mcp-trust]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/mcp.md#L192-L200
 [doc-plugin-doctor]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L332-L351
 [doc-plugin-guide]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L353-L368
 [doc-plugin-handlers]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L887-L895
 [doc-plugin-hooks]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L1602-L1613
 [doc-plugin-register]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L903-L940
+[mcp-prefix]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/mcp_tool_schema.py#L176-L180
 [plugin-register-tool]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/plugins_context.py#L272-L277
 [plugins-never-core]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/plugins/AGENTS.md#L7-L15
 <!-- refs:end -->

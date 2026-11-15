@@ -5,6 +5,8 @@
 > જવાબ ત્રણ જુદી વસ્તુ છે, અને ત્રણેયનું કામ જુદું છે: ખિસ્સા-ડાયરી, રોજમેળ, અને સાર-નોંધ.
 > પહેલાં: [પ્રકરણ 3](03-ojar-kabat-tools.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![ચાર યાદ: ખિસ્સા-ડાયરી, રોજમેળ, સાર-નોંધ અને ફેરફાર પહેલાંનો ફોટો.](images/chapters/04-yaad-memory-sessions.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - **Memory**, **session history** અને **compression** — ત્રણ પ્રકારની "યાદ" — અલગ કરી, કઈ ક્યારે વપરાય તે કહી શકશો.
@@ -21,6 +23,8 @@
 | **Model ક્યારે જુએ** | **હંમેશા** (પાટી પર) | **માગે ત્યારે** (`session_search`) | ચાલુ વાતચીતમાં |
 | **કોણ લખે** | Agent, `memory` tool થી | આપમેળે, દરેક turn | આપમેળે, threshold પર |
 | **દૃશ્ય** | 1, 2, 3 | 4 | 5, 6 |
+
+અને ચોથી, જુદી જાતની યાદ: **files** ની (checkpoints, દૃશ્ય 7). પહેલી ત્રણ વાતચીતની યાદ છે; ચોથી કામની.
 
 ---
 
@@ -202,6 +206,47 @@ _PRUNED_TOOL_PLACEHOLDER = "[Old tool output cleared to save context space]"
 
 🔬 **Expert નજર.** Compression **lossy** છે: માહિતી ખોવાય છે, અને તે એકમાત્ર જગ્યા છે જ્યાં Hermes જાણીજોઈને cache તોડે છે. એટલે તેની આસપાસ આટલી વાડ છે. Guide એક ખાસ નિષ્ફળતા પણ વર્ણવે છે: summary stream અટકી જાય, તો એક વાર fallback chain પર retry; ફરી અટકે, તો **deterministic fallback summary** — પણ "never a prune committed outside the lease/fence". અર્થ: અડધું compression કદી commit ન થાય. **જે operation ડેટા ગુમાવે, તે કાં પૂરું થાય, કાં બિલકુલ નહીં.**
 
+## દૃશ્ય 7 — ફેરફાર પહેલાંનો ફોટો: checkpoints અને `/rollback`
+
+🎬 હર્ષ પટેલ લગ્નની બેઠક-વ્યવસ્થાની file "સુધારે" છે, અને ભૂલથી અડધાં ટેબલ ભૂંસી નાખે છે. ત્રણ દિવસની મહેનત. ચાર યાદમાંથી એક પણ મદદ કરતી નથી: ડાયરીમાં ટેબલ નથી, રોજમેળમાં વાતચીત છે પણ file નથી, અને સાર-નોંધ તો વાતચીતની છે.
+
+ઈશા: "આ ત્રણેય **વાતચીતની** યાદ છે. **Files** ની યાદ કોણ રાખે?"
+
+નિખિલમામા: "હવેથી નિયમ: કોઈ કાગળ બદલતાં પહેલાં તેનો **ફોટોકોપી** બાજુની ફાઈલમાં. દરેક કામ દીઠ એક વાર પૂરતી."
+
+💻 **Checkpoints** ([doc][doc-checkpoints]) ✅. Hermes, ફેરફાર પહેલાં, આપમેળે snapshot લે છે:
+
+- **File tools** — `write_file` અને `patch` પહેલાં.
+- **Destructive terminal commands** — `rm`, `mv`, `sed -i`, output redirects (`>`), `git reset`/`clean`/`checkout` વગેરે પહેલાં.
+- **"at most one checkpoint per directory per turn"**.
+
+Snapshots એક અલગ **shadow git store** માં જાય છે, `~/.hermes/checkpoints/store/` — "your real project `.git` is never touched". બધા projects એક store વહેંચે, એટલે git ની content-addressed objects ડુપ્લિકેટ બચાવે.
+
+Code નું પ્રવેશદ્વાર ([checkpoint_manager.py][checkpoint-ensure]) ✅:
+
+```python
+# Repository code — tools/checkpoint_manager.py
+def ensure_checkpoint(self, working_dir: str, reason: str = "auto") -> bool:
+    """Take a checkpoint if enabled and not already done this turn.
+
+    Returns True if a checkpoint was taken, False otherwise.
+    Never raises — all errors are silently logged. ...
+```
+
+પાછા વળવું ([commands][doc-checkpoints-cmds]) ✅ ⚠️:
+
+| Command | કામ |
+|---|---|
+| `/rollback` | બધા checkpoints, ફેરફારના આંકડા સાથે |
+| `/rollback <N>` | Checkpoint N પર પાછા; તમારા હાથના ફેરફાર રાખીને (અને છેલ્લો chat turn પણ undo) |
+| `/rollback <N> --all` | પૂરું restore; હાથના ફેરફાર પણ જાય |
+| `/rollback diff <N>` | Restore પહેલાં diff જુઓ |
+| `/rollback <N> <file>` | ફક્ત એક file |
+
+⚠️ **Default બંધ છે.** Docs: checkpoints "opt-in as of v2", કારણ કે મોટા ભાગના users `/rollback` વાપરતા નથી અને store નું કદ સમય જતાં વધે છે. ચાલુ કરવા: `hermes chat --checkpoints`, કે `config.yaml` માં `checkpoints.enabled: true`. મર્યાદાઓ: `max_snapshots: 20` (project દીઠ), `max_total_size_mb: 500`.
+
+🔬 **Expert નજર.** બે ડિઝાઇન નિર્ણય ધ્યાનથી જુઓ. **"Never raises"**: snapshot નિષ્ફળ જાય તો મૂળ કામ અટકતું નથી. સલામતી-જાળ પોતે કામ તોડે તો લોકો તેને બંધ કરી દે (પ્રકરણ 3: "fixes that destroy the feature they secure"). **તમારું `.git` અડાતું નથી**: સલામતી-સાધન વપરાશકર્તાના પોતાના ઇતિહાસમાં commits ઉમેરે, તો તે મદદ નહીં, ગંદકી છે. અને "default off" એ પ્રામાણિક ખર્ચ-નિર્ણય છે: દરેક સારી સગવડની કિંમત છે, અને એ કિંમત કોણ ચૂકવે તે વપરાશકર્તા નક્કી કરે.
+
 ## Source map: આ ક્રમમાં ખોલો
 
 1. [Memory doc — How It Works][doc-memory]
@@ -212,6 +257,7 @@ _PRUNED_TOOL_PLACEHOLDER = "[Old tool output cleared to save context space]"
 6. [Session storage doc — Hermes home][doc-session-home]
 7. [Compression doc — Configuration][doc-compress-config]
 8. [Compression doc — Algorithm][doc-compress-algo]
+9. [Checkpoints doc][doc-checkpoints] અને [`ensure_checkpoint()`][checkpoint-ensure]
 
 ## 🧪 Lab 4 — ત્રણ યાદ, એક file માં
 
@@ -270,7 +316,7 @@ Memory doc માં આ ફરિયાદ માટે આખો troubleshooti
 
 ## ✅ સાર — ઈશાની નોટબુક
 
-### છ ઘટના, છ નિયમ
+### સાત ઘટના, સાત નિયમ
 
 | 🎬 ઘટના | 💻 નિયમ | તૂટે તો |
 |---|---|---|
@@ -280,6 +326,7 @@ Memory doc માં આ ફરિયાદ માટે આખો troubleshooti
 | કાકાનો પ્રશ્ન | `state.db` + FTS5 + `session_search` | ઝીણી વિગતો કાયમ માટે ગઈ |
 | 300 પાનાં | Compression: 50% પર, 4 તબક્કા | Context overflow |
 | ત્રણ ભૂલ | Tool જોડી સાથે; પહેલાં memory; soft-archive | Provider reject; ડેટા ખોટ |
+| અડધાં ટેબલ ભૂંસાયાં | Checkpoints: ફેરફાર પહેલાં shadow git snapshot; `/rollback` (opt-in) | Files ની ભૂલ પાછી ન વળે |
 
 ### નવા શબ્દો
 
@@ -333,8 +380,11 @@ Memory · frozen snapshot · `§` delimiter · session · SQLite · FTS5 · WAL 
 <!-- refs:start (generated by tools/citations.py) -->
 [agent-flow-invariants]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/AGENTS.md#L55-L78
 [agents-verify-intent]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/AGENTS.md#L50-L52
+[checkpoint-ensure]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/checkpoint_manager.py#L1052-L1057
 [compress-defaults]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/config_defaults.py#L576-L590
 [compress-placeholder]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/context_compressor.py#L840
+[doc-checkpoints]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/checkpoints-and-rollback.md#L27-L34
+[doc-checkpoints-cmds]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/checkpoints-and-rollback.md#L42-L46
 [doc-compress-algo]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L562-L573
 [doc-compress-boundaries]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L596-L619
 [doc-compress-config]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L289-L318

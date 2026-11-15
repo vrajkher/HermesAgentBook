@@ -11,6 +11,7 @@
 | `python3 labs/01-loop/mini_loop.py` | Budget, parallel order, alternation |
 | `python3 labs/02-prompt/cache_sim.py` | Prefix cache ના ત્રણ scenarios |
 | `python3 labs/03-tools/mini_registry.py` | Registry, `check_fn`, dispatch, approval |
+| `python3 labs/03-tools/mini_exec.py` | એક-એક ઓજાર vs એક script |
 | `python3 labs/04-memory/mini_memory.py` | Memory, FTS5, compression |
 | `python3 labs/05-skills/check_skill.py <SKILL.md>` | Skill standards checker |
 | `python3 labs/06-gateway/mini_gateway.py` | Authz, session key, cron, delegation |
@@ -53,6 +54,7 @@
 | `/skills`, `/<skill-name>` | Skills | 5 |
 | `/cron add "<schedule>" "<prompt>"` | Job ઉમેરો | 6 |
 | `/personality [name]` | Session-level overlay | 2 |
+| `/rollback`, `/rollback <N>`, `/rollback diff <N>` | Checkpoint પર પાછા (`checkpoints.enabled` જોઈએ) | 4 |
 
 ## Config keys જે આ પુસ્તકમાં આવ્યા ✅
 
@@ -68,3 +70,5 @@
 | `delegation.max_iterations` | `250` | 6 |
 | `delegation.max_concurrent_children` | `10` | 6 |
 | `prompt_caching.cache_ttl` | `5m` | 2 |
+| `agent.api_max_retries` | `3` | 1 |
+| `checkpoints.enabled` | `false` | 4 |

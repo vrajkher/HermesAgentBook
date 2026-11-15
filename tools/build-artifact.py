@@ -49,7 +49,9 @@ def main() -> None:
         for f in sorted((ROOT / folder).rglob("*")):
             if f.is_file() and f.name != "README.md" and "__pycache__" not in f.parts:
                 files[str(f.relative_to(ROOT))] = f.read_text(encoding="utf-8")
-    data = json.dumps({"docs": docs, "files": files}, ensure_ascii=False).replace("</", "<\\/")
+    images = {str(f.relative_to(ROOT)): f.read_text(encoding="utf-8")
+              for f in sorted((ROOT / "book" / "images").rglob("*.svg"))}
+    data = json.dumps({"docs": docs, "files": files, "images": images}, ensure_ascii=False).replace("</", "<\\/")
     out.write_text(TEMPLATE.replace("/*__BOOK_DATA__*/null", data), encoding="utf-8")
     print(f"wrote {out} ({out.stat().st_size // 1024} KB, {len(docs)} docs, {len(files)} files)")
 

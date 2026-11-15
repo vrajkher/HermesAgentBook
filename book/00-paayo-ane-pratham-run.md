@@ -4,6 +4,8 @@
 > આજે ઈશા Hermes નું **ઘર** જુએ છે: તે ક્યાં install થાય, પોતાનો સામાન ક્યાં રાખે, અને source code માં કયો ઓરડો કોનો છે.
 > પહેલાં: [પ્રવેશ](pravesh-shunya-thi-shuruaat.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![~/.hermes નું ઘર: તિજોરી (.env), નોટિસ-બોર્ડ (config.yaml), ઓળખ-કાર્ડ (SOUL.md), ડાયરી, રોજમેળ, રીત-પોથી, એલાર્મ અને કારીગર.](images/chapters/00-paayo-ane-pratham-run.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - Hermes install કરી, પહેલી વાતચીત શરૂ કરવાના commands કહી શકશો.

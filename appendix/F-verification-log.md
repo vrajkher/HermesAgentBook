@@ -32,6 +32,8 @@
 - `lagna-mehmaan-yadi` skill નું ખરા session માં loading.
 - પ્રકરણ 0 ની આગાહી કસોટી (`HERMES_HOME=… hermes chat -q`).
 - Compression trigger નું small-window floor (0.75) વર્તન.
+- Checkpoints અને `/rollback` (opt-in feature).
+- `execute_code` અને Tool Search નું ખરું વર્તન (book lab ફક્ત વિચાર બતાવે છે).
 - ખરા provider પર cache hit ના આંકડા.
 
 તમે ચલાવો ત્યારે અહીં ઉમેરો: command, તારીખ, Hermes commit, પરિણામ.
@@ -43,7 +45,8 @@
 | 1 | `agent/iteration_budget.py` docstring અને agent-loop doc: parent default 500, subagent 50 | `AIAgent.__init__`: `max_iterations=sys.maxsize`; `config_defaults.py`: `"max_turns": None`; `delegate_tool.py`: `DEFAULT_MAX_ITERATIONS = 250` | 1 |
 | 2 | `agent/AGENTS.md`: "Cron sessions pass `skip_memory=True` by default" | `cron/scheduler.py`: `skip_memory=False` | 6 |
 | 3 | Delegation doc: subagents માટે `cronjob` blocked | `DELEGATE_BLOCKED_TOOLS` માં `cronjob_manage` | 6 |
-| 4 | Architecture doc: "70+ tools", "~28 toolsets"; README: "40+ tools" | ગણ્યું નથી ⚠️ | — |
+| 4 | MCP user doc: tools `mcp_<server_name>_<tool_name>` (દા.ત. `mcp_github_create_issue`) | `tools/mcp_tool_schema.py`: `MCP_TOOL_NAME_PREFIX = "mcp__"`; નામ `mcp__<server>__<tool>`, 64 અક્ષરે hash suffix સાથે | 7 |
+| 5 | Architecture doc: "70+ tools", "~28 toolsets"; README: "40+ tools" | ગણ્યું નથી ⚠️ | — |
 
 #2 નો ઇરાદો આ પુસ્તક જાણતું નથી; કયું સાચું "હોવું જોઈએ" તે upstream નો નિર્ણય છે.
 

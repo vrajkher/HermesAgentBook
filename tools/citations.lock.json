@@ -631,6 +631,102 @@
    "end": 48,
    "needle": "hermes profile create coder"
   },
+  "doc-loop-apimodes": {
+   "path": "website/docs/developer-guide/agent-loop.md",
+   "start": 41,
+   "end": 56,
+   "needle": "## API Modes"
+  },
+  "api-max-retries": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 122,
+   "end": 122,
+   "needle": "\"api_max_retries\": 3,"
+  },
+  "doc-fallback-internals": {
+   "path": "website/docs/developer-guide/provider-runtime.md",
+   "start": 184,
+   "end": 207,
+   "needle": "### How it works internally"
+  },
+  "doc-fallback-not": {
+   "path": "website/docs/developer-guide/provider-runtime.md",
+   "start": 208,
+   "end": 211,
+   "needle": "### What does NOT support fallback"
+  },
+  "exec-sandbox-tools": {
+   "path": "tools/code_execution_tool.py",
+   "start": 43,
+   "end": 51,
+   "needle": "SANDBOX_ALLOWED_TOOLS = frozenset(["
+  },
+  "doc-code-exec": {
+   "path": "website/docs/user-guide/features/code-execution.md",
+   "start": 11,
+   "end": 18,
+   "needle": "## How It Works"
+  },
+  "doc-code-exec-when": {
+   "path": "website/docs/user-guide/features/code-execution.md",
+   "start": 32,
+   "end": 39,
+   "needle": "## When the Agent Uses This"
+  },
+  "doc-tool-search": {
+   "path": "website/docs/user-guide/features/tool-search.md",
+   "start": 13,
+   "end": 15,
+   "needle": "**Tool Search** is Hermes' opt-in"
+  },
+  "doc-tool-search-how": {
+   "path": "website/docs/user-guide/features/tool-search.md",
+   "start": 32,
+   "end": 38,
+   "needle": "When Tool Search activates for a turn"
+  },
+  "doc-checkpoints": {
+   "path": "website/docs/user-guide/checkpoints-and-rollback.md",
+   "start": 27,
+   "end": 34,
+   "needle": "## What Triggers a Checkpoint"
+  },
+  "doc-checkpoints-cmds": {
+   "path": "website/docs/user-guide/checkpoints-and-rollback.md",
+   "start": 42,
+   "end": 46,
+   "needle": "| `/rollback` | List all"
+  },
+  "checkpoint-ensure": {
+   "path": "tools/checkpoint_manager.py",
+   "start": 1052,
+   "end": 1057,
+   "needle": "    def ensure_checkpoint(self, working_dir: str"
+  },
+  "mcp-prefix": {
+   "path": "tools/mcp_tool_schema.py",
+   "start": 176,
+   "end": 180,
+   "needle": "def mcp_prefixed_tool_name("
+  },
+  "doc-mcp-quickstart": {
+   "path": "website/docs/user-guide/features/mcp.md",
+   "start": 29,
+   "end": 40,
+   "needle": "## Quick start"
+  },
+  "doc-mcp-registers": {
+   "path": "website/docs/user-guide/features/mcp.md",
+   "start": 569,
+   "end": 575,
+   "needle": "## How Hermes registers MCP tools"
+  },
+  "doc-mcp-trust": {
+   "path": "website/docs/user-guide/features/mcp.md",
+   "start": 192,
+   "end": 200,
+   "needle": "### Trust model"
+  },
   "doc-local-models": {
    "path": "website/docs/user-guide/local-models.md",
    "start": 171,

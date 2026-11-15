@@ -5,6 +5,8 @@
 > આ પ્રકરણ Hermes ની પહેલી invariant ખોલે છે: *"Per-conversation prompt caching is sacred."*
 > પહેલાં: [પ્રકરણ 1](01-ek-sandesh-ni-musafari.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![સૂચના-પાટીના ત્રણ થર, stable ઉપર અને volatile નીચે; બીજા ફોનમાં સરખો શરૂઆતી ભાગ સસ્તો.](images/chapters/02-suchna-pati-prompt-ane-cache.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - System prompt ના ત્રણ થર — **stable, context, volatile** — અને દરેકમાં શું જાય છે તે કહી શકશો.

@@ -5,6 +5,8 @@
 > આ Hermes ની ઓળખ છે: README તેને "the self-improving AI agent" કહે છે, અને તેનું હૃદય skills છે.
 > પહેલાં: [પ્રકરણ 4](04-yaad-memory-sessions.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![રીત-પોથીનાં ત્રણ સ્તર: સૂચિ, પાનું, પરિશિષ્ટ; હર્ષ જાતે નવું પાનું લખે.](images/chapters/05-reet-pothi-skills.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - **Memory** (હકીકત) અને **skill** (રીત) નો તફાવત કહી, કઈ વાત ક્યાં જાય તે નક્કી કરી શકશો.

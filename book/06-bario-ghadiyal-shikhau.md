@@ -5,6 +5,8 @@
 > ત્રણ જવાબ: **gateway** (અનેક જગ્યા), **cron** (અનેક સમય), **delegation** (અનેક હાથ). ત્રણેયમાં agent core એ જ રહે છે.
 > પહેલાં: [પ્રકરણ 5](05-reet-pothi-skills.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![Telegram અને WhatsApp ની બારીઓ, રઘુકાકાની ચોકી, હર્ષ, એલાર્મ-ઘડિયાળ, અને સાર લઈને પાછો આવતો શિખાઉ જય.](images/chapters/06-bario-ghadiyal-shikhau.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - Platform પરથી આવેલા સંદેશાનો gateway માં રસ્તો — authorize → session key → agent → delivery — કહી શકશો.

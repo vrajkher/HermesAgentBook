@@ -11,7 +11,7 @@ bash labs/run-all.sh
 | `pravesh/` | પ્રવેશ | Agent loop |
 | `01-loop/` | 1 | `IterationBudget`, parallel tool order, role alternation, interrupt |
 | `02-prompt/` | 2 | ત્રણ tiers; prefix cache |
-| `03-tools/` | 3 | Registry, `check_fn`, dispatch, approval |
+| `03-tools/` | 3 | Registry, `check_fn`, dispatch, approval; `mini_exec.py`: `execute_code` નો context લાભ |
 | `04-memory/` | 4 | Memory limits + frozen snapshot; SQLite FTS5; compression |
 | `05-skills/` | 5 | `SKILL.md` + authoring-standards checker |
 | `06-gateway/` | 6 | Authorization order, session key, at-most-once cron, delegation |

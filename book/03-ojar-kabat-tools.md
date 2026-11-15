@@ -5,6 +5,8 @@
 > આ પ્રકરણ Hermes ની બીજી invariant ખોલે છે: *"The core is a narrow waist; capability lives at the edges."*
 > પહેલાં: [પ્રકરણ 2](02-suchna-pati-prompt-ane-cache.md). આખો નકશો: [સમગ્ર નકશો](overview-samagra-naksho.md).
 
+![નાનો core કબાટ, નવાં ઓજાર કિનારે; જોખમી command સહી પાસે જાય, અને તિજોરી સહીથી પણ ન ખૂલે.](images/chapters/03-ojar-kabat-tools.svg)
+
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
 - Tool ના ચાર ભાગ — **name, schema, handler, check_fn** — ઓળખી શકશો.
@@ -22,6 +24,8 @@
 | 4 | તૂટેલું ઓજાર | `dispatch()`: દરેક ભૂલ JSON માં |
 | 5 | 200 ઓજારનો કબાટ | Narrow waist; toolsets; footprint ladder |
 | 6 | ભંગારવાળો | Dangerous-command approval; hardline |
+| 7 | ત્રીસ ભાવપત્રક | `execute_code`: ફક્ત `print()` context માં |
+| 8 | બહારનાં 300 ઓજાર | Tool Search: ત્રણ bridge tools |
 
 ---
 
@@ -247,6 +251,56 @@ Patterns ની યાદી ([`DANGEROUS_PATTERNS`][approval-dangerous]) ✅ �
 
 Guide માં આનો ઉલટો ફાંસો પણ છે: "'fixes' that destroy the feature they secure" reject થાય છે. સુરક્ષા જે ઓજારને નકામું બનાવી દે, તે સુરક્ષા નથી; લોકો તેને બંધ કરી દેશે.
 
+## દૃશ્ય 7 — ત્રીસ ભાવપત્રક: `execute_code`
+
+🎬 શાસ્ત્રીજી કહે છે: "ત્રીસ કેટરરમાંથી સૌથી સસ્તો **જૈન** કેટરર શોધ." હર્ષ પહેલું ભાવપત્રક લાવે, ફોન પર આખું વાંચે; શાસ્ત્રીજી: "બીજું લાવ." ત્રીસ ફોન. દરેક ફોનમાં આગલાં બધાં ભાવપત્રક ફરી વંચાય (પ્રવેશ: આખી ફાઈલ દર વખતે). બપોર પૂરી, બિલ આસમાને.
+
+બીજે દિવસે શાસ્ત્રીજી જુદું કરે છે: તે હર્ષને **એક કાગળ પર રીત** લખાવે છે: "ત્રીસેય ભાવપત્રક ખોલ; જૈન ન હોય તે બાજુએ; બાકીમાંથી સૌથી ઓછો ભાવ; **ફક્ત એ એક લીટી** મને કહે." હર્ષ કાગળ પ્રમાણે ઑફિસમાં જ ત્રીસેય ખોલે છે. બીજા ફોનમાં ફક્ત એક લીટી: "કેટરર 13: ₹424."
+
+💻 **`execute_code`** — programmatic tool calling ([code execution doc][doc-code-exec]) ✅:
+
+1. Model એક Python script લખે છે: `from hermes_tools import ...`
+2. Hermes `hermes_tools.py` stub module બનાવે છે, જેના functions RPC calls છે.
+3. Script child process માં ચાલે છે; tool calls Unix domain socket પર Hermes પાસે જાય છે.
+4. **"Only the script's `print()` output is returned to the LLM; intermediate tool results never enter the context window."**
+
+Script ની અંદર કયાં tools? ફક્ત સાત ([code_execution_tool.py][exec-sandbox-tools]) ✅:
+
+```python
+# Repository code — tools/code_execution_tool.py
+SANDBOX_ALLOWED_TOOLS = frozenset([
+    "web_search", "web_extract", "read_file", "write_file", "search_files", "patch", "terminal",
+])
+```
+
+અને મર્યાદાઓ એ જ file માં: default timeout 300 સેકન્ડ, script દીઠ 50 tool calls, stdout 50 KB.
+
+Agent આ ક્યારે વાપરે ([link][doc-code-exec-when]) ✅: "3+ tool calls with processing logic between them", bulk filtering, results પર loops.
+
+અને પ્રકરણ 1 નો `refund()` અહીં જોડાય છે: `IterationBudget` ના docstring પ્રમાણે `execute_code` ના iterations પાછા અપાય છે, જેથી script budget ન ખાય ([iteration_budget.py][budget-class]) ✅.
+
+🔬 **Expert નજર.** આ પ્રકરણ 6 ના subagent નો નાનો ભાઈ છે: **ઘોંઘાટ બહાર, સાર અંદર.** ફરક: subagent બીજું model ચલાવે (વિચારી શકે); script ફક્ત code ચલાવે (ઝડપી, સસ્તું, deterministic). ભાવ સરખાવવા વિચારની જરૂર નથી, ગણતરીની છે. **જે કામ નિયમથી થાય, તે માટે model નો વિચાર ન વાપરો.** Sandbox માં ફક્ત સાત tools કેમ? `delegate_task`, `memory`, `clarify` જેવાં tools agent ની સ્થિતિ બદલે છે કે માણસને પૂછે છે; script ની અંદર, model ની નજર બહાર, તે ચાલે તે જોખમી.
+
+## દૃશ્ય 8 — બહારનાં 300 ઓજાર: tool search
+
+🎬 દૃશ્ય 5 પછી કબાટ નાનો થયો. પણ હવે બહારના કારીગરો (પ્રકરણ 7) પોતાનાં ઓજાર લાવે છે: GitHub નાં 40, Slack નાં 25, હિસાબનાં 60. દરેક ફોનમાં તેમની ચિઠ્ઠીઓ ફરી વંચાવા લાગી.
+
+સ્મિતાબેનનો ઉપાય: "બહારનાં ઓજારની ચિઠ્ઠીઓ **અનુક્રમણિકા-પેટી** માં. હર્ષ ફોનમાં ફક્ત ત્રણ વાત કહે: 'પેટીમાં શોધી શકું', 'કોઈ ઓજારની આખી ચિઠ્ઠી લાવી શકું', 'એ ઓજાર વાપરી શકું'. શાસ્ત્રીજી માગે ત્યારે જ આખી ચિઠ્ઠી."
+
+💻 **Tool Search** ([doc][doc-tool-search]) ✅: "Hermes' opt-in progressive-disclosure layer". Activate થાય ત્યારે MCP અને non-core plugin tools ની જગ્યાએ model ને ત્રણ bridge tools દેખાય ([link][doc-tool-search-how]) ✅:
+
+```text
+tool_search(queries, limit?)   search the deferred-tool catalog (one or more queries)
+tool_describe(names)           load the full schemas for one or more tools
+tool_call(calls)               invoke deferred tools; `calls` is an array of {name, arguments}
+```
+
+Core tools (`terminal`, `read_file`, `memory`, … `_HERMES_CORE_TOOLS`) default માં સીધાં લોડ રહે છે; `tools.tool_search.defer` થી ઠંડાં built-ins પણ પેટીમાં મૂકી શકાય.
+
+સૌથી અગત્યની વિગત: `tool_call` વખતે Hermes **bridge ખોલી નાખે છે** અને અંદરનું tool "exactly as if the model had called it directly" ચલાવે છે: pre-tool-call hooks, guardrails, **approval prompts** — બધું ખરા tool ના નામ સામે ✅.
+
+🔬 **Expert નજર.** આ પ્રકરણ 5 નું progressive disclosure છે, tools પર લાગુ: સૂચિ → વર્ણન → ઉપયોગ. અને bridge ની ડિઝાઇન સુરક્ષાનો પાઠ છે: નવું સ્તર ઉમેરો ત્યારે **જૂની ચોકીઓ તેની પાછળ સંતાઈ ન જવી જોઈએ**. જો approval `tool_call` નામ સામે થતું, તો દરેક જોખમી ઓજાર "tool_call" ના નામે છટકી જાત. નવો રસ્તો બનાવો ત્યારે પૂછો: **"જૂની ચોકી આ રસ્તા પર પણ ઊભી છે?"**
+
 ## Source map: આ ક્રમમાં ખોલો
 
 1. [Architecture — File Dependency Chain][doc-arch-depchain]
@@ -258,8 +312,10 @@ Guide માં આનો ઉલટો ફાંસો પણ છે: "'fixes' t
 7. [AGENTS.md — Footprint ladder][agents-footprint]
 8. [approval_detection.py — `detect_dangerous_command()`][approval-detect]
 9. [Security doc — Approval Modes][doc-security-modes]
+10. [code_execution_tool.py — `SANDBOX_ALLOWED_TOOLS`][exec-sandbox-tools]
+11. [Tool Search doc][doc-tool-search-how]
 
-## 🧪 Lab 3 — નાનો કબાટ, પાંચ પ્રયોગ
+## 🧪 Lab 3 — નાનો કબાટ, અને ત્રીસ ભાવપત્રક
 
 [`labs/03-tools/mini_registry.py`](../labs/03-tools/mini_registry.py): 80 lines માં registry, `check_fn`, dispatch અને approval.
 
@@ -292,6 +348,29 @@ python3 labs/03-tools/mini_registry.py
 
 ⚠️ Lab ની ત્રણ regex patterns ફક્ત વિચાર બતાવે છે. Hermes ની ખરી યાદી સેંકડો lines ની છે અને shell ની ઝીણવટ (quotes, flags નો ક્રમ, Windows paths) સંભાળે છે.
 
+### ભાગ 2 — એક-એક ઓજાર vs એક script
+
+[`labs/03-tools/mini_exec.py`](../labs/03-tools/mini_exec.py) દૃશ્ય 7 નું કામ બે રીતે કરે છે: 30 કેટરર files, સૌથી સસ્તો જૈન કેટરર.
+
+**પહેલાં ધારો:** રીત A માં કેટલા model calls? રીત B માં?
+
+```bash
+python3 labs/03-tools/mini_exec.py
+```
+
+અપેક્ષિત output 🧪 ([evidence](../evidence/03-mini-exec.out)):
+
+```text
+A) એક-એક ઓજાર : model calls 31 | context  29043 અક્ષર
+B) એક script   : model calls  2 | context     69 અક્ષર | script ની અંદર tool calls 30
+   script નું print(): કેટરર 13: ₹424 / થાળી (જૈન)
+   context 421 ગણો નાનો, model calls 29 ઓછા
+```
+
+**વાંચો:** બંને રીતે 30 વાર `read_file` ચાલ્યું. ફરક **ક્યાં** ચાલ્યું તેમાં છે: A માં દરેક પરિણામ model ની ફાઈલમાં ગયું; B માં script ની અંદર રહ્યું.
+
+⚠️ Lab ફક્ત **છેલ્લી** ફાઈલનું કદ ગણે છે. ખરો ખર્ચ A માં તેનાથી ઘણો વધુ છે, કારણ કે 31 calls માંથી દરેક આગલાં બધાં પરિણામ ફરી મોકલે છે (પ્રવેશ, દૃશ્ય 4).
+
 ## 🔮 આગાહી કસોટી
 
 Cron job રાત્રે 3 વાગ્યે ચાલે છે અને model `rm -rf old_reports/` માગે છે. `approvals.mode: manual` છે. શું થશે: (a) સવાર સુધી રાહ, (b) command ચાલશે, (c) command block થશે અને agent બીજો રસ્તો શોધશે? ([પરિશિષ્ટ D](../appendix/D-lab-solutions.md#ch3))
@@ -309,7 +388,7 @@ Cron job રાત્રે 3 વાગ્યે ચાલે છે અને m
 
 ## ✅ સાર — ઈશાની નોટબુક
 
-### છ ઘટના, છ નિયમ
+### આઠ ઘટના, આઠ નિયમ
 
 | 🎬 ઘટના | 💻 નિયમ | તૂટે તો |
 |---|---|---|
@@ -319,6 +398,8 @@ Cron job રાત્રે 3 વાગ્યે ચાલે છે અને m
 | તૂટેલી સીડી | દરેક exception → `{"error": …}` | Turn તૂટે |
 | 200 ઓજાર | Narrow waist; footprint ladder | મોંઘા calls; ગૂંચવાયેલું model |
 | ભંગારવાળો | Approval; default deny; hardline | એક command માં ડેટા ગયો |
+| ત્રીસ ભાવપત્રક | `execute_code`: ઘોંઘાટ script માં, `print()` context માં | 31 મોંઘા calls |
+| બહારનાં 300 ઓજાર | Tool Search; bridge ખરા tool નાં hooks અને approval ચલાવે | દરેક call ફૂલે; કે ચોકી છટકે |
 
 ### નવા શબ્દો
 
@@ -373,11 +454,17 @@ Schema · handler · `check_fn` · registry · dispatch · AST · toolset · nar
 [approval-dangerous]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/approval_detection.py#L589-L593
 [approval-detect]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/approval_detection.py#L2030-L2043
 [approval-hardline]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/approval_detection.py#L187-L192
+[budget-class]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/iteration_budget.py#L25-L58
 [doc-adding-tools]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/adding-tools.md#L23-L25
 [doc-arch-depchain]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/architecture.md#L271-L283
+[doc-code-exec]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/code-execution.md#L11-L18
+[doc-code-exec-when]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/code-execution.md#L32-L39
 [doc-plugin-handlers]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/plugins/index.md#L887-L895
 [doc-security-modes]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/security.md#L28-L41
 [doc-security-yolo]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/security.md#L67-L74
+[doc-tool-search]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/tool-search.md#L13-L15
+[doc-tool-search-how]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/tool-search.md#L32-L38
+[exec-sandbox-tools]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/code_execution_tool.py#L43-L51
 [handle-fc]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/model_tools.py#L908-L925
 [registry-discover]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/registry.py#L94-L110
 [registry-dispatch]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/registry.py#L1084-L1119

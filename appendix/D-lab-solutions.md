@@ -101,6 +101,6 @@
 3. Inbox access: MCP server કે plugin tool (API integration → tool). "સાર કેવો જોઈએ": skill. "દર કલાકે": cron, Telegram delivery સાથે. Core tool નહીં.
 4. (i) `/model` બદલ્યો કે fallback થયો → cache શૂન્ય; (ii) વાતચીત ખૂબ લાંબી, `/new` નથી; (iii) plugin/tools વધ્યાં → દરેક call મોટો; (iv) agent loop માં અટક્યો, મર્યાદા અમર્યાદ; (v) nested delegation; (vi) cache TTL કરતાં લાંબા વિરામ.
 5. Reject. `agent/AGENTS.md` Message-flow invariants: system prompt byte-stable; `build_system_prompt` "only rebuilt after compression"; timestamp પહેલેથી volatile થરમાં session-start વખતે છે. વિકલ્પ: tool કે user-message નોંધ. અને prompt-surface snapshot test fail થશે.
-6. (i) Iteration budget: docstring/doc "500/50" vs code "unlimited/250"; (ii) cron `skip_memory`: `agent/AGENTS.md` "True" vs `scheduler.py` `False`; (iii) delegation doc `cronjob` vs code `cronjob_manage`. દરેકમાં: code ને હકીકત માનો; ચલાવીને ખાતરી કરો; (i) અને (iii) માટે doc-fix PR; (ii) માટે પહેલાં ઇરાદો પૂછતો issue.
+6. (i) Iteration budget: docstring/doc "500/50" vs code "unlimited/250"; (ii) cron `skip_memory`: `agent/AGENTS.md` "True" vs `scheduler.py` `False`; (iii) delegation doc `cronjob` vs code `cronjob_manage`; (iv) MCP doc `mcp_<server>_<tool>` vs code `mcp__<server>__<tool>`. દરેકમાં: code ને હકીકત માનો; ચલાવીને ખાતરી કરો; (i), (iii) અને (iv) માટે doc-fix PR; (ii) માટે પહેલાં ઇરાદો પૂછતો issue.
 
 **Rubric:** [પરિશિષ્ટ E](E-mastery-rubric.md).

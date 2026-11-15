@@ -55,6 +55,7 @@ article h2 { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; m
 article h3 { font-family: var(--display); font-size: 1.18rem; margin: 1.6em 0 .4em; color: var(--mehndi) }
 article p, article ul, article ol { margin: 0 0 1em }
 article li { margin-bottom: .3em }
+article img { display: block; width: 100%; height: auto; border-radius: 12px; margin: 0 0 1.4em }
 article hr { border: 0; border-top: 1px dashed var(--line); margin: 2em 0 }
 article blockquote { margin: 0 0 1.2em; padding: 10px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--muted) }
 article blockquote p:last-child { margin-bottom: 0 }
@@ -164,6 +165,11 @@ td { font-variant-numeric: tabular-nums }
   }
 
   function decorate(root, basePath) {
+    root.querySelectorAll('img[src]').forEach(function (img) {
+      var target = resolve(basePath, img.getAttribute('src'));
+      if (DATA.images && DATA.images[target]) img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(DATA.images[target]);
+      else img.remove();
+    });
     root.querySelectorAll('table').forEach(function (t) {
       var w = document.createElement('div'); w.className = 'tablewrap'; t.parentNode.insertBefore(w, t); w.appendChild(t);
     });

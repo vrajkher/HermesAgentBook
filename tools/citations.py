@@ -142,6 +142,23 @@ CITES = [
     ("doc-plugin-hooks", D + "developer-guide/plugins/index.md", "### Hook reference", 12),
     ("doc-plugin-doctor", D + "developer-guide/plugins/index.md", "### Validate with Plugin Doctor", 20),
     ("doc-profiles", D + "user-guide/profiles.md", "hermes profile create coder", 1),
+    # --- added in the second pass ----------------------------------------------------------
+    ("doc-loop-apimodes", D + "developer-guide/agent-loop.md", "## API Modes", 16),
+    ("api-max-retries", "hermes_cli/config_defaults.py", '"api_max_retries": 3,', 1),
+    ("doc-fallback-internals", D + "developer-guide/provider-runtime.md", "### How it works internally", 24),
+    ("doc-fallback-not", D + "developer-guide/provider-runtime.md", "### What does NOT support fallback", 4),
+    ("exec-sandbox-tools", "tools/code_execution_tool.py", "SANDBOX_ALLOWED_TOOLS = frozenset([", 9),
+    ("doc-code-exec", D + "user-guide/features/code-execution.md", "## How It Works", 8),
+    ("doc-code-exec-when", D + "user-guide/features/code-execution.md", "## When the Agent Uses This", 8),
+    ("doc-tool-search", D + "user-guide/features/tool-search.md", "**Tool Search** is Hermes' opt-in", 3),
+    ("doc-tool-search-how", D + "user-guide/features/tool-search.md", "When Tool Search activates for a turn", 7),
+    ("doc-checkpoints", D + "user-guide/checkpoints-and-rollback.md", "## What Triggers a Checkpoint", 8),
+    ("doc-checkpoints-cmds", D + "user-guide/checkpoints-and-rollback.md", "| `/rollback` | List all", 5),
+    ("checkpoint-ensure", "tools/checkpoint_manager.py", "    def ensure_checkpoint(self, working_dir: str", 6),
+    ("mcp-prefix", "tools/mcp_tool_schema.py", "def mcp_prefixed_tool_name(", 5),
+    ("doc-mcp-quickstart", D + "user-guide/features/mcp.md", "## Quick start", 12),
+    ("doc-mcp-registers", D + "user-guide/features/mcp.md", "## How Hermes registers MCP tools", 7),
+    ("doc-mcp-trust", D + "user-guide/features/mcp.md", "### Trust model", 9),
     ("doc-local-models", D + "user-guide/local-models.md", "    base_url: http://127.0.0.1:8081/v1", 2),
 ]
 

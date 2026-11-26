@@ -18,7 +18,8 @@
 
 1. `config.yaml` વહેંચી શકાય (bug report, backup, મિત્ર); `.env` નહીં. એક file હોત તો દરેક વહેંચણી key-ચોરીનું જોખમ.
 2. Root `AGENTS.md` દરેક AI coding session માં context તરીકે લોડ થાય છે. મોટી file = દરેક session મોંઘો અને ધ્યાન વેરાયેલું. Hermes પોતાના માટે પણ "પાટી નાની રાખો" પાળે છે.
-3. "Patch where production reads." Sibling function facade માંથી નામ import કરે છે, એટલે patch facade પર જોઈએ; defining module પરનો patch "passes silently".
+3. "Patch where the name is looked up." `report.py` એ `quote` ને પોતાના namespace માં import કર્યું છે, એટલે `report.py` ચાલે ત્યારે `report.quote` શોધાય છે, `pricing.quote` નહીં. સાચો patch: `report.quote`.
+4. Root guide નો નિયમ **internal** moves માટે છે ("internal paths are not API"). `hermes_state` ના વપરાશકર્તાઓ Hermes ની બહારના plugins છે, જેમને Hermes બદલી શકતું નથી; plugins guide આ એક અપવાદ નામ લઈને લખે છે, અને તેની સમાપ્તિ નક્કી છે (v0.27.0 પહેલાં નહીં, પછી દૂર). સમય-મર્યાદા વગરનો shim કાયમી દેવું બને.
 
 <a id="ch1"></a>
 
@@ -101,6 +102,6 @@
 3. Inbox access: MCP server કે plugin tool (API integration → tool). "સાર કેવો જોઈએ": skill. "દર કલાકે": cron, Telegram delivery સાથે. Core tool નહીં.
 4. (i) `/model` બદલ્યો કે fallback થયો → cache શૂન્ય; (ii) વાતચીત ખૂબ લાંબી, `/new` નથી; (iii) plugin/tools વધ્યાં → દરેક call મોટો; (iv) agent loop માં અટક્યો, મર્યાદા અમર્યાદ; (v) nested delegation; (vi) cache TTL કરતાં લાંબા વિરામ.
 5. Reject. `agent/AGENTS.md` Message-flow invariants: system prompt byte-stable; `build_system_prompt` "only rebuilt after compression"; timestamp પહેલેથી volatile થરમાં session-start વખતે છે. વિકલ્પ: tool કે user-message નોંધ. અને prompt-surface snapshot test fail થશે.
-6. (i) Iteration budget: docstring/doc "500/50" vs code "unlimited/250"; (ii) cron `skip_memory`: `agent/AGENTS.md` "True" vs `scheduler.py` `False`; (iii) delegation doc `cronjob` vs code `cronjob_manage`; (iv) MCP doc `mcp_<server>_<tool>` vs code `mcp__<server>__<tool>`. દરેકમાં: code ને હકીકત માનો; ચલાવીને ખાતરી કરો; (i), (iii) અને (iv) માટે doc-fix PR; (ii) માટે પહેલાં ઇરાદો પૂછતો issue.
+6. (i) Iteration budget: docstring "500/50" અને doc "500" vs code "unlimited/250" — **અડધો સુધર્યો**: doc નો subagent આંકડો હવે 250; (ii) cron `skip_memory`: `agent/AGENTS.md` "True" vs `scheduler.py` `False` — **બાકી**; (iii) delegation doc `cronjob` vs code `cronjob_manage` — **સુધર્યો**; (iv) MCP doc `mcp_<server>_<tool>` vs code `mcp__<server>__<tool>` — **બાકી**. બાકી રહેલામાં: code ને હકીકત માનો; ચલાવીને ખાતરી કરો; (i) અને (iv) માટે doc-fix PR; (ii) માટે પહેલાં ઇરાદો પૂછતો issue.
 
 **Rubric:** [પરિશિષ્ટ E](E-mastery-rubric.md).

@@ -11,7 +11,8 @@
 - Hermes install કરી, પહેલી વાતચીત શરૂ કરવાના commands કહી શકશો.
 - `~/.hermes` ની દરેક મુખ્ય file નું કામ કહી શકશો, અને "settings ક્યાં, secrets ક્યાં" નો નિયમ સમજાવી શકશો.
 - Source ને ચોક્કસ commit પર **pin** કરી શકશો, જેથી આ પુસ્તકની દરેક link તમારા computer પર એ જ line બતાવે.
-- "Facade + siblings" ગોઠવણ સમજી, કોઈ પણ function ને `grep` થી શોધી શકશો.
+- Facade અને topic folders ની ગોઠવણ સમજી, કોઈ પણ function ને `grep` થી શોધી શકશો.
+- Upstream બદલાય ત્યારે pin ફરી કરી, કયા દાવા તૂટ્યા તે શોધી શકશો.
 
 ## 🗺️ નકશો
 
@@ -21,7 +22,8 @@
 | 2 | તિજોરી અને નોટિસ-બોર્ડ | `.env` (secrets) vs `config.yaml` (વર્તન) |
 | 3 | "ઑફિસ ક્યાં છે?" | `get_hermes_home()` અને profiles |
 | 4 | એ જ દિવસનો ફોટો | Commit pinning |
-| 5 | રિસેપ્શન અને અંદરના ઓરડા | Facade + siblings |
+| 5 | રિસેપ્શન અને અંદરના ઓરડા | Facade અને topic folders |
+| 6 | અગિયાર દિવસ પછી | Re-pin; deprecation |
 
 ---
 
@@ -58,7 +60,7 @@ hermes doctor
 | `hermes config set …` | એક setting બદલો |
 | `hermes gateway` | Telegram, WhatsApp વગેરેની બારીઓ (પ્રકરણ 6) |
 
-⚠️ **Installer વિશે.** `curl … | bash` internet પરથી script લાવીને ચલાવે છે. Expert તેને પહેલાં **વાંચે** છે. અને Hermes model એ બનાવેલા commands ચલાવી શકે છે; [SECURITY.md](https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/SECURITY.md) પહેલાં વાંચો.
+⚠️ **Installer વિશે.** `curl … | bash` internet પરથી script લાવીને ચલાવે છે. Expert તેને પહેલાં **વાંચે** છે. અને Hermes model એ બનાવેલા commands ચલાવી શકે છે; [SECURITY.md](https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/SECURITY.md) પહેલાં વાંચો.
 
 🔬 **Expert નજર.** `hermes chat` terminal ની અંદર agent ચલાવતું **નથી**. Docs કહે છે: classic CLI એક **gateway client** છે; તે profile નો gateway શોધે કે શરૂ કરે, session ત્યાં બનાવે, અને local WebSocket પર જોડાય ([CLI doc][doc-cli-gateway-client]) ✅. Terminal બંધ કરો તો કામ અટકતું નથી. વાર્તામાં: ગ્રાહક ફોન મૂકી દે, તો પણ હર્ષ કામ પૂરું કરે છે. આ વાત પ્રકરણ 6 માં ફરી આવશે.
 
@@ -124,7 +126,7 @@ Code માં `~/.hermes` સીધું લખવું lint rule **HX001** �
 💻 Source code રોજ બદલાય છે. Hermes માં તો બહુ ઝડપથી. "`run_agent.py` ની line 242" આજે એક વાત છે, કાલે બીજી. એટલે આ પુસ્તક એક ચોક્કસ **commit** પર pinned છે:
 
 ```text
-18e659dfc93ef319771d51441573e3fa31b8f5b7   (main, 2026-11-15)
+93dd2a4efb0709ceac09969b85d306e768b53815   (main, 2026-11-26)
 ```
 
 - **Git** = code ના દરેક ફેરફારનો ઇતિહાસ રાખતું tool.
@@ -137,27 +139,31 @@ git clone https://github.com/NousResearch/hermes-agent.git && cd hermes-agent
 ```
 
 ```bash
-git checkout --detach 18e659dfc93ef319771d51441573e3fa31b8f5b7
+git checkout --detach 93dd2a4efb0709ceac09969b85d306e768b53815
 ```
 
-🧪 આ પુસ્તકની 106 citations ને `tools/citations.py` એ આ જ checkout સામે ચકાસી છે: દરેક link ની પહેલી line માં અપેક્ષિત શબ્દસમૂહ ("needle") હાજર છે. પૂર્ણ table: [citations.generated.md](../appendix/citations.generated.md).
+🧪 આ પુસ્તકની 131 citations ને `tools/citations.py` એ આ જ checkout સામે ચકાસી છે: દરેક link ની પહેલી line માં અપેક્ષિત શબ્દસમૂહ ("needle") હાજર છે. પૂર્ણ table: [citations.generated.md](../appendix/citations.generated.md).
 
 🔬 **Expert નજર.** Pinning ફક્ત પુસ્તક માટે નથી. Hermes પોતે પોતાની dependencies ને **exact version** પર pin કરે છે, ranges વગર; `pyproject.toml` ની comment કારણ આપે છે — એક supply-chain હુમલો, જેમાં range હોત તો ખરાબ package આપમેળે install થઈ જાત. સિદ્ધાંત એક જ: **"જે તમે ચકાસ્યું નથી, તે આપમેળે અંદર ન આવવું જોઈએ."**
 
-## દૃશ્ય 5 — રિસેપ્શન અને અંદરના ઓરડા: facade + siblings
+## દૃશ્ય 5 — રિસેપ્શન અને અંદરના ઓરડા: facade અને topic folders
 
-🎬 પહેલાં શુભમંગલમાં એક જ મોટો ઓરડો હતો; બધા એક જ ટેબલ પર, અને કોઈ કાગળ જડતો નહોતો. સ્મિતાબેને ઑફિસ ફરી ગોઠવી: આગળ **રિસેપ્શન** — ત્યાં ફક્ત નામની તકતીઓ — અને પાછળ નાના ઓરડા: "કેટરિંગ", "મંડપ", "મહેમાન".
+🎬 પહેલાં શુભમંગલમાં એક જ મોટો ઓરડો હતો; બધા એક જ ટેબલ પર, અને કોઈ કાગળ જડતો નહોતો. સ્મિતાબેને ઑફિસ ફરી ગોઠવી: કોઈ વિભાગ (દા.ત. "મહેમાન") એક ટેબલમાં ન સમાય એટલો મોટો થાય, તો તેને **પોતાનો ઓરડો** મળે. ઓરડાના દરવાજે એક **તકતી** — અંદર કોણ શું કરે છે — અને અંદર દરેક કામનું અલગ ટેબલ.
 
-❓ "રિસેપ્શન પર કામ કેમ નથી થતું?"
+❓ "તકતી પાસે કામ કેમ નથી થતું?"
 
-"રિસેપ્શન કહે છે **કોની પાસે જવું**. કામ ઓરડામાં થાય."
+"તકતી કહે છે **કોની પાસે જવું**. કામ ટેબલ પર થાય."
 
-💻 Hermes ની source આ જ રીતે ગોઠવાયેલી છે. Guide તેને **"Facade + siblings layout"** કહે છે ([AGENTS.md][agents-facade]) ✅:
+💻 Hermes ની source આ જ રીતે ગોઠવાય છે. Guide નો વિભાગ **"Packages and Python shape"** ([AGENTS.md][agents-facade]) ✅:
 
-- **Facade** = રિસેપ્શન: public entry points અને બીજા packages જે નામ import કરે છે.
-- **Siblings** = ઓરડા: `<stem>_<topic>.py`, દરેક એક વિષયનો માલિક.
+> "A topic that outgrows its file becomes a folder: `<stem>/__init__.py` is the **facade** … `<stem>/<topic>.py` holds the code."
 
-ઉદાહરણ: `hermes_state.py` facade છે; તેની બાજુમાં `hermes_state_schema.py`, `hermes_state_fts.py`, `hermes_state_search.py` અને બીજા ડઝનો siblings છે. `run_agent.py` માં `AIAgent` class છે ([run_agent.py][aiagent-class]) ✅, પણ loop `agent/conversation_loop.py` અને `agent/turn_*.py` માં રહે છે ([agent/AGENTS.md][agent-shape]) ✅.
+- **Facade** (`__init__.py`) = તકતી: તેનો docstring દરેક module નું કામ કહે છે, `__all__` બહારની સપાટી છે; **"no behaviour"**.
+- **Topic modules** (`<stem>/<topic>.py`) = ટેબલ, દરેક એક વિષયનો માલિક.
+
+ઉદાહરણ: session storage હવે `persistence/` folder છે — અંદર `core/`, `conversation/`, `sqlite/` જેવા ઓરડા ([architecture doc][doc-arch-persistence]) ✅. Checkpoints `agent/checkpoints/` folder માં છે (`manager.py`, `pruning.py`, `refs.py`…). જૂની સપાટ ગોઠવણ — `<stem>_<topic>.py` "siblings" (`gateway/run.py`, `tools/mcp_tool.py` ની બાજુમાંની files) — "stay until touched": અડો ત્યારે folder બને, નવી ન ઉમેરાય.
+
+`run_agent.py` માં `AIAgent` class છે ([run_agent.py][aiagent-class]) ✅, પણ loop `agent/conversation_loop.py` અને `agent/turn_*.py` માં રહે છે ([agent/AGENTS.md][agent-shape]) ✅.
 
 **Load-bearing entry points** — પહેલા દિવસે આટલાં નામ પૂરતાં:
 
@@ -167,12 +173,12 @@ git checkout --detach 18e659dfc93ef319771d51441573e3fa31b8f5b7
 | `agent/conversation_loop.py`, `agent/turn_*.py` | Turn loop અને તેના તબક્કા | હર્ષનો દિવસ |
 | `agent/system_prompt.py`, `agent/prompt_builder.py` | System prompt | સૂચના-પાટી |
 | `model_tools.py`, `tools/registry.py`, `toolsets.py` | Tools | ઓજાર-કબાટ અને થેલા |
-| `hermes_state.py` + siblings | Session DB | રોજમેળ |
+| `persistence/`, `persistence_assembly.py` | Session storage (interface + SQLite backend) | રોજમેળ |
 | `gateway/` | Messaging gateway | બારીઓ |
 | `cron/` | Scheduler | એલાર્મ-ચોપડી |
 | `plugins/`, `skills/` | Extensions | કારીગર, રીત-પોથી |
 
-**શોધવાની રીત.** Guide ની સલાહ: facade વાંચીને નહીં, **વિષયથી શોધો** ⚠️:
+**શોધવાની રીત.** Guide ની સલાહ: facade વાંચીને નહીં, **વિષયથી શોધો** — `<stem>/` અને `<stem>_*.py` માં `def name` ⚠️:
 
 ```bash
 grep -rn "def build_system_prompt" agent/
@@ -180,16 +186,47 @@ grep -rn "def build_system_prompt" agent/
 
 દરેક મોટા વિસ્તારની પોતાની `AGENTS.md` છે (`agent/AGENTS.md`, `tools/AGENTS.md`, `gateway/AGENTS.md`…), અને root `AGENTS.md` માં routing table છે કે કયા folder માટે કઈ વાંચવી.
 
-🔬 **Expert નજર.** Size પર **ratchet** છે: નવા function ની cyclomatic complexity ≤ 20, ≤ 300 lines; files ≤ 2,000 lines; જે પહેલેથી મોટાં છે તે ફક્ત **ઘટી** શકે. એક વ્યવહારુ ફાંસો પણ લખેલો છે: sibling function ની અંદર `from <facade> import name` કરે છે, એટલે test માં patch **facade પર** કરવો પડે — "patch where production reads". Defining module પર કરેલો patch "passes silently": test લીલો, પણ કંઈ ચકાસ્યું નથી.
+🔬 **Expert નજર.** Size પર **ratchet** છે: નવા function ની cyclomatic complexity ≤ 20, ≤ 300 lines; files ≤ 2,000 lines; જે પહેલેથી મોટાં છે તે ફક્ત **ઘટી** શકે ("move code into `<stem>/`"). Imports નો નિયમ પણ કડક છે: "topic modules import one another, never the facade; a cycle means a shared name belongs in a lower module." અને test માટે એક વાક્ય: **"Patch where the name is looked up."** જે module `from x import f` કરીને `f` વાપરે, તેમાં `f` ની પોતાની નકલ છે; `x.f` પર કરેલો patch ત્યાં પહોંચતો નથી — test લીલો, પણ કંઈ ચકાસ્યું નથી.
+
+## દૃશ્ય 6 — અગિયાર દિવસ પછી: ફોટો ફરી પાડવો
+
+🎬 પુસ્તક પૂરું થયાના અગિયાર દિવસ પછી ઈશા ફરી ઑફિસ જુએ છે. "મહેમાન" વિભાગ ખસીને નવા ઓરડામાં ગયો છે. જૂના ટેબલ પર એક **પાટિયું** છે: "આ ટેબલ હવે નવા ઓરડામાં છે. અહીં ફક્ત જૂના ગ્રાહકો માટે, દિવાળી સુધી."
+
+ઈશા પાસે ગયા અઠવાડિયાનો ફોટો છે. તેમાં ટેબલ જૂની જગ્યાએ છે.
+
+❓ "હવે ફોટો ખોટો?"
+
+"ખોટો નહીં, **જૂનો**. ફોટો એ દિવસ માટે સાચો હતો. હવે નવો ફોટો પાડવો, અને બંનેને સરખાવવા."
+
+💻 આ પુસ્તક સાથે બરાબર આ જ થયું. પહેલું version `18e659d` (2026-11-15) પર pinned હતું; આ version `93dd2a4` (2026-11-26) પર. ફરી pin કરતાં `tools/citations.py` એ **ચાર** citations પર ના પાડી, કારણ કે તેમના શબ્દસમૂહ નવા code માં મળ્યા નહીં:
+
+| Citation | શું થયું |
+|---|---|
+| `AGENTS.md` "Facade + siblings layout" | વિભાગ ફરી લખાયો: "Packages and Python shape" (દૃશ્ય 5) |
+| `hermes_state.py` નો `class SessionDB(` | Session storage `persistence/` interface પાછળ ગયું (પ્રકરણ 4) |
+| `hermes_state_fts.py` | File કાઢી નાખી; FTS5 schema હવે `persistence/sqlite/` માં |
+| `tools/checkpoint_manager.py` | `agent/checkpoints/manager.py` માં ખસી |
+
+અને જૂનું ટેબલ, પાટિયા સાથે ([hermes_state.py][hermes-state-shim]) ✅:
+
+```python
+# Repository code — hermes_state.py
+"""Compatibility module for outside plugins that still import ``hermes_state``; removed in v0.27.0.
+```
+
+Plugin guide નો નિયમ ([link][doc-hermes-state-deprecated]) ✅: પહેલી વાર જૂનું નામ વપરાય ત્યારે process દીઠ **એક** warning, જેમાં નવું નામ અને દૂર થવાનું release લખેલું હોય; module v0.24, v0.25, v0.26 સુધી ચાલે, અને v0.27.0 પહેલાં દૂર નહીં.
+
+🔬 **Expert નજર.** ત્રણ પાઠ. **(1) Pin ફક્ત link બચાવતી નથી, ફેરફાર પકડે છે:** needle ન મળે તો tool fail થાય, એટલે ખબર પડે કે કયા દાવા ફરી વાંચવા. પણ needle મળે એટલે દાવો સાચો એવું નહીં: આ update માં needle વાળી lines સાચવીને પણ ચાર જગ્યાએ **વર્તન** બદલાયું હતું (cache નો default, skill description ની મર્યાદા, error text, docs). એટલે દરેક cited file નો diff પણ વાંચ્યો. **(2) Internal path API નથી:** root guide કહે છે "No re-export shims for internal moves". `hermes_state` નો shim અપવાદ છે, કારણ કે **બહારના** plugins તેના પર આધાર રાખે છે — અને તેની પણ સમય-મર્યાદા છે. **(3) સારું deprecation ત્રણ વાત કહે છે:** શું બદલાયું, તેની જગ્યાએ શું, અને ક્યાં સુધી. જે warning આમાંની એક પણ ચૂકે, તે ફક્ત ઘોંઘાટ છે.
 
 ## Source map: આ ક્રમમાં ખોલો
 
 1. [README — Getting Started][readme-getting-started]
 2. [AGENTS.md — બે invariants][agents-invariants]
-3. [AGENTS.md — Facade + siblings][agents-facade]
+3. [AGENTS.md — Packages and Python shape][agents-facade]
 4. [hermes_constants.py — `get_hermes_home()`][hermes-home]
 5. [Architecture doc — System Overview][doc-architecture]
 6. [Architecture doc — Design Principles][doc-arch-principles]
+7. [hermes_state.py — deprecation stand-in][hermes-state-shim] અને [plugin guide — storage interface][doc-hermes-state-deprecated]
 
 ## 🧪 Lab 0 — ઘર ઓળખો (Hermes install વગર પણ)
 
@@ -204,14 +241,14 @@ bash labs/run-all.sh
 **ભાગ B — pinned source વાંચો.** Hermes clone કરીને pin કરો (દૃશ્ય 4), પછી **પહેલાં ધારો, પછી ચલાવો** ⚠️:
 
 ```bash
-ls hermes_state*.py | wc -l
+ls persistence/
 ```
 
 ```bash
 grep -c "" AGENTS.md
 ```
 
-પહેલો command `hermes_state` facade ના siblings ગણે છે (ધારો: 5? 20? 60?). બીજો root `AGENTS.md` ની lines ગણે છે; guide કહે છે કે આ file 12k અક્ષરથી મોટી ન થવા દેવાય. કેમ? કારણ કે આ file દરેક AI coding session માં context તરીકે લોડ થાય છે — **પ્રકરણ 2 નો નિયમ, પોતાના પર લાગુ**.
+પહેલો command `persistence/` ના ઓરડા બતાવે છે (ધારો: કેટલા folders, અને `__init__.py` કેમ?). બીજો root `AGENTS.md` ની lines ગણે છે; guide કહે છે કે આ file 12k અક્ષરથી મોટી ન થવા દેવાય. કેમ? કારણ કે આ file દરેક AI coding session માં context તરીકે લોડ થાય છે — **પ્રકરણ 2 નો નિયમ, પોતાના પર લાગુ**.
 
 **ભાગ C — Hermes હોય તો** ⚠️: `hermes doctor` ચલાવો અને output ની દરેક line ને ઉપરના `~/.hermes` table સાથે જોડો.
 
@@ -229,19 +266,20 @@ grep -c "" AGENTS.md
 
 ## ✅ સાર — ઈશાની નોટબુક
 
-### પાંચ ઘટના, પાંચ નિયમ
+### છ ઘટના, છ નિયમ
 
 | 🎬 ઘટના | 💻 નિયમ |
 |---|---|
 | નવા માણસને ટેબલ, નંબર, તપાસ | install → `hermes setup` → `hermes doctor` |
 | PIN બોર્ડ પરથી ફાડ્યો | `.env` = secrets; `config.yaml` = વર્તન |
 | કુરિયર ખોટી શાખાએ | `get_hermes_home()`; કદી hardcode નહીં |
-| "ગયા અઠવાડિયા જેવો મંડપ" | Commit pin: `18e659d` |
-| રિસેપ્શન અને ઓરડા | Facade + siblings; વિષયથી `grep` |
+| "ગયા અઠવાડિયા જેવો મંડપ" | Commit pin: `93dd2a4` |
+| ઓરડા અને તકતી | `<stem>/__init__.py` facade, `<stem>/<topic>.py` code; વિષયથી `grep` |
+| જૂના ટેબલ પર પાટિયું | Re-pin; deprecation: શું, તેની જગ્યાએ શું, ક્યાં સુધી |
 
 ### નવા શબ્દો
 
-Profile · `HERMES_HOME` · commit · pin · facade · sibling · lint rule · ratchet.
+Profile · `HERMES_HOME` · commit · pin · facade · topic module · lint rule · ratchet · deprecation · shim.
 
 ### યાદ-ચાવી
 
@@ -259,7 +297,8 @@ Profile · `HERMES_HOME` · commit · pin · facade · sibling · lint rule · r
 
 1. `.env` અને `config.yaml` એક file કેમ નથી? **સુરક્ષા** નું કારણ એક વાક્યમાં.
 2. Root `AGENTS.md` પર 12k અક્ષરની મર્યાદા કેમ છે?
-3. Test માં તમે `agent/turn_api_call.py` ના function ને patch કર્યો; test પાસ થયો, પણ production bug રહી ગઈ. Guide નો કયો નિયમ તૂટ્યો?
+3. `report.py` ની ટોચે `from pricing import quote` છે. Test માં તમે `pricing.quote` ને patch કર્યો; test પાસ થયો, પણ `report.py` નું વર્તન ચકાસાયું જ નહીં. Guide નો કયો નિયમ તૂટ્યો, અને સાચો patch કયો?
+4. `hermes_state` નો shim "No re-export shims for internal moves" નિયમનો ભંગ કેમ નથી?
 
 જવાબો: [પરિશિષ્ટ D](../appendix/D-lab-solutions.md#ch0).
 
@@ -270,18 +309,21 @@ Profile · `HERMES_HOME` · commit · pin · facade · sibling · lint rule · r
 "કાલે એક સંદેશાની પાછળ પાછળ ચાલીશું, દરવાજાથી જવાબ સુધી." → [પ્રકરણ 1 — એક સંદેશાની આખી મુસાફરી](01-ek-sandesh-ni-musafari.md)
 
 <!-- refs:start (generated by tools/citations.py) -->
-[agent-shape]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/AGENTS.md#L5-L20
-[agents-facade]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/AGENTS.md#L94-L109
-[agents-invariants]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/AGENTS.md#L16-L25
-[agents-rejected]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/AGENTS.md#L43-L49
-[aiagent-class]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/run_agent.py#L215
-[doc-arch-principles]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/architecture.md#L260-L270
-[doc-architecture]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/architecture.md#L11-L14
-[doc-cli-gateway-client]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/cli.md#L175-L177
-[doc-memory]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/memory.md#L11-L20
-[doc-profiles]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/profiles.md#L48
-[doc-session-home]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/session-storage.md#L16-L31
-[doc-which-file]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/which-file-does-what.md#L11-L24
-[hermes-home]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_constants.py#L206-L211
-[readme-getting-started]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/README.md#L107-L119
+[agent-shape]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/agent/AGENTS.md#L5-L20
+[agents-facade]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/AGENTS.md#L94-L117
+[agents-invariants]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/AGENTS.md#L16-L25
+[agents-rejected]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/AGENTS.md#L43-L49
+[aiagent-class]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/run_agent.py#L215
+[doc-arch-persistence]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/architecture.md#L59-L60
+[doc-arch-principles]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/architecture.md#L261-L271
+[doc-architecture]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/architecture.md#L11-L14
+[doc-cli-gateway-client]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/cli.md#L175-L177
+[doc-hermes-state-deprecated]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/plugins/index.md#L315-L321
+[doc-memory]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/features/memory.md#L11-L20
+[doc-profiles]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/profiles.md#L48
+[doc-session-home]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/session-storage.md#L16-L31
+[doc-which-file]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/which-file-does-what.md#L11-L24
+[hermes-home]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_constants.py#L208-L213
+[hermes-state-shim]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_state.py#L1-L7
+[readme-getting-started]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/README.md#L107-L119
 <!-- refs:end -->

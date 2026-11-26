@@ -1,7 +1,7 @@
 """પ્રકરણ 4 lab: ખિસ્સા-ડાયરી, રોજમેળ અને સાર-નોંધ. Book lab code.
 
 નકલ કરેલા નિયમ (pinned source): tools/memory_tool_store.py — "§" delimiter, અક્ષર-મર્યાદા,
-frozen snapshot; hermes_state_fts.py — SQLite FTS5; context-compression doc — જૂનાં tool
+frozen snapshot; persistence/sqlite/_schema_ddl.py — SQLite FTS5; context-compression doc — જૂનાં tool
 પરિણામ સાફ, માથું અને પૂંછડી સચવાય.
 ચલાવો:  python3 labs/04-memory/mini_memory.py
 """

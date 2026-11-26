@@ -3,7 +3,7 @@
 એક ગુજરાતી પુસ્તક, જે એક જ વાર્તા — વડોદરાનું **"શુભમંગલ વેડિંગ પ્લાનર્સ"** — માં [Hermes Agent](https://github.com/NousResearch/hermes-agent) ને અંદરથી શીખવે છે. વાર્તા શણગાર નથી: ઑફિસની દરેક ઘટના Hermes નો એક નિયમ છે, તેના કારણ સાથે.
 
 - **વિષય:** [Hermes Agent](https://github.com/NousResearch/hermes-agent) — Nous Research નો "self-improving AI agent": agent loop, prompt caching, tools, memory, skills, messaging gateway, cron, subagents, plugins.
-- **Pinned commit:** [`18e659d`](https://github.com/NousResearch/hermes-agent/tree/18e659dfc93ef319771d51441573e3fa31b8f5b7) (`main`, 2026-11-15). દરેક source link આ commit પર pinned છે.
+- **Pinned commit:** [`93dd2a4`](https://github.com/NousResearch/hermes-agent/tree/93dd2a4efb0709ceac09969b85d306e768b53815) (`main`, 2026-11-26). દરેક source link આ commit પર pinned છે. પહેલું version `18e659d` (2026-11-15) પર હતું; શું બદલાયું તે [verification log](appendix/F-verification-log.md) અને [પ્રકરણ 0, દૃશ્ય 6](book/00-paayo-ane-pratham-run.md) માં.
 - **વાચક:** 12મું ધોરણ પાસ કરેલો કોઈ પણ વિદ્યાર્થી, programming ન આવડતું હોય તો પણ. [પ્રવેશ પ્રકરણ](book/pravesh-shunya-thi-shuruaat.md) શૂન્યથી શરૂ કરે છે; પ્રકરણ 7 ના અંતે તમે plugin લખો છો અને maintainer ની જેમ PR આંકો છો.
 - **API key જરૂરી નથી.** બધી labs ફક્ત Python standard library પર ચાલે છે.
 
@@ -14,7 +14,7 @@
 >
 > **પ્રામાણિક નોંધ:** આ પુસ્તક જ્યાં લખાયું ત્યાં Hermes Agent install કરવાની પરવાનગી નહોતી. એટલે પુસ્તકની પોતાની labs 🧪 છે; `hermes …` commands docs/source માંથી ✅ છે, પણ ચલાવેલા નથી ⚠️. વિગત: [verification log](appendix/F-verification-log.md).
 >
-> Hermes model એ બનાવેલા commands ચલાવી શકે છે. વાપરતાં પહેલાં upstream [SECURITY.md](https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/SECURITY.md) વાંચો.
+> Hermes model એ બનાવેલા commands ચલાવી શકે છે. વાપરતાં પહેલાં upstream [SECURITY.md](https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/SECURITY.md) વાંચો.
 
 ## વાર્તા એક ફકરામાં
 
@@ -33,7 +33,7 @@
 |---|---|---|---|
 | — | — | **[સમગ્ર નકશો — આખું પુસ્તક એક નજરે](book/overview-samagra-naksho.md)** | પાત્રો, 14 ઘટના → 14 નિયમ, બે invariants |
 | −1 | 1 | [પ્રવેશ — શૂન્યથી શરૂઆત](book/pravesh-shunya-thi-shuruaat.md) | terminal, JSON/YAML, model/API/token; 45-line રમકડા-agent |
-| 0 | 2 | [પાયો અને પ્રથમ run](book/00-paayo-ane-pratham-run.md) | `~/.hermes` નું ઘર, commit pinning, facade + siblings |
+| 0 | 2 | [પાયો અને પ્રથમ run](book/00-paayo-ane-pratham-run.md) | `~/.hermes` નું ઘર, commit pinning અને re-pin, facade અને topic folders |
 | 1 | 3–4 | [એક સંદેશાની આખી મુસાફરી](book/01-ek-sandesh-ni-musafari.md) | Turn vs iteration, `while` loop, budget, alternation, interrupt |
 | 2 | 5 | [સૂચના-પાટી: prompt અને cache](book/02-suchna-pati-prompt-ane-cache.md) | ત્રણ tiers; એક લીટીનો ભાવ (cache simulation) |
 | 3 | 6–7 | [ઓજાર-કબાટ: tools](book/03-ojar-kabat-tools.md) | Registry, `check_fn`, dispatch, footprint ladder, approval |
@@ -96,7 +96,7 @@ bash labs/run-all.sh
 ## પુસ્તક ચકાસવું (maintainers માટે)
 
 ```bash
-git clone https://github.com/NousResearch/hermes-agent.git && git -C hermes-agent checkout --detach 18e659dfc93ef319771d51441573e3fa31b8f5b7
+git clone https://github.com/NousResearch/hermes-agent.git && git -C hermes-agent checkout --detach 93dd2a4efb0709ceac09969b85d306e768b53815
 ```
 
 ```bash

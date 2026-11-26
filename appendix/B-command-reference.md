@@ -69,6 +69,7 @@
 | `compression.in_place` | `true` | 4 |
 | `delegation.max_iterations` | `250` | 6 |
 | `delegation.max_concurrent_children` | `10` | 6 |
-| `prompt_caching.cache_ttl` | `5m` | 2 |
+| `prompt_caching.cache_ttl` | `auto` (`1h` માણસ સાથે, `5m` machine-paced) | 2 |
+| `skills.index_desc_limit` | `60` (60–1024) | 5 |
 | `agent.api_max_retries` | `3` | 1 |
 | `checkpoints.enabled` | `false` | 4 |

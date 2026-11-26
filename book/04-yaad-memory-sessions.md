@@ -114,21 +114,37 @@ Messaging platforms પર chat જાણીજોઈને **એક સતત s
 
 હર્ષ **રોજમેળ** ખોલે છે: ઑફિસની દરેક વાતચીત, તારીખવાર. પણ 400 પાનાં! પાછળ **અનુક્રમણિકા** છે: "થાળી → પાનું 112, 118, 240". ત્રીસ સેકન્ડમાં જવાબ: "450; પછી 480 કરી."
 
-💻 Hermes દરેક વાતચીત **SQLite** database માં રાખે છે — `get_hermes_home() / "state.db"`:
+💻 Hermes દરેક વાતચીત **SQLite** database માં રાખે છે — `get_hermes_home() / "state.db"`. તેમાં `sessions`, `messages`, અને શોધ માટે `messages_fts` જેવાં tables છે ([session storage doc][doc-storage-overview]) ✅.
+
+પણ agent નો code SQLite ને સીધો અડતો નથી. વચ્ચે એક **interface** છે — રોજમેળનું "કાઉન્ટર" — જે કહે છે કે ચોપડામાંથી શું માગી શકાય ([backend.py][store-protocol]) ✅:
 
 ```python
-# Repository code — hermes_state.py
-class SessionDB(
-    SessionSessionsMixin, SessionFtsSetupMixin, SessionSearchMixin, SessionSchemaMixin,
+# Repository code — persistence/core/backend.py
+class PersistenceStore(Protocol):
+    """One store handle bound to one profile: its repositories as named attributes beside these facts."""
+
+    scope: ProfileScope
+    read_only: bool
     ...
-):
-    """SQLite-backed session storage with FTS5 search; many reader threads, one writer (WAL)."""
+    sessions: SessionRepository
+    messages: MessageRepository
+    lineage: LineageRepository
+    search: SessionSearch
+    ...
 ```
 
-([hermes_state.py][sessiondb-class]) ✅
+અને આ interface નું એક ખરું રૂપ — SQLite backend ([_backend.py][sqlite-store]) ✅:
+
+```python
+# Repository code — persistence/sqlite/_backend.py
+class SQLiteStore:
+    """One store handle bound to one profile: its repositories, capability facts and awaitable view ``aio``."""
+```
 
 - **SQLite** = એક file માં આખો database; server નથી.
-- **FTS5** = SQLite નું full-text search: શબ્દથી તરત શોધ (અનુક્રમણિકા). Tables: `messages_fts` ([hermes_state_fts.py][sessiondb-fts]) ✅.
+- **FTS5** = SQLite નું full-text search: શબ્દથી તરત શોધ (અનુક્રમણિકા). Table `messages_fts` નું schema હવે `persistence/sqlite/` માં છે ([_schema_ddl.py][sessiondb-fts]) ✅.
+- **Protocol** = Python નો "કરાર": કયાં attributes અને methods હોવાં જોઈએ, અમલ કર્યા વગર. Code `store.messages`, `store.search` માગે છે; પાછળ SQLite છે કે બીજું કંઈ, તેને ખબર નથી.
+- **Handle એક profile સાથે બંધાયેલું** ("bound to one profile"): પ્રકરણ 0 નું "રજિસ્ટરમાં જુઓ" અહીં type માં જ લખાયેલું છે.
 - **WAL** = write-ahead log: ઘણા વાચકો, એક લેખક, એકબીજાને રોક્યા વગર.
 
 Model આ સુધી `session_search` tool થી પહોંચે છે (core tool; agent-level, એટલે પ્રકરણ 1 ના inline table માં). README તેને "FTS5 session search with LLM summarization for cross-session recall" કહે છે ✅.
@@ -141,7 +157,7 @@ Model આ સુધી `session_search` tool થી પહોંચે છે (c
 | સ્વભાવ | કાયમી, વારંવાર જોઈએ | ઝીણું, ક્યારેક જોઈએ |
 | ખર્ચ | **દરેક call** માં tokens | **માગો ત્યારે જ** |
 
-🔬 **Expert નજર.** આ computer science નો જૂનો વિચાર છે: **cache અને disk**. નાનું, ઝડપી, મોંઘું (memory: હંમેશા context માં) અને મોટું, ધીમું, સસ્તું (database: માગો ત્યારે). દરેક સારી system બંને રાખે, અને મુખ્ય કળા એ નક્કી કરવાની છે કે **શું ક્યાં રહે**. અને એક સુરક્ષા વાત: sessions માં secrets અને અંગત વાતો હોય છે. Session storage doc એક guard વર્ણવે છે જે test process ને production `state.db` ખોલતાં **રોકે છે** — "a hard `RuntimeError`" — જેથી test નો નકલી ડેટા કદી જીવંત ઇતિહાસમાં ન ભળે.
+🔬 **Expert નજર.** Storage ની રચના પોતે બીજી invariant નું ઉદાહરણ છે: **સાંકડી કમર** — interface (`PersistenceStore`) પાતળું અને સ્થિર, backend (`SQLiteStore`) તેની પાછળ. પ્રકરણ 0 નું "અગિયાર દિવસ પછી" દૃશ્ય બતાવે છે કે 2026 ના નવેમ્બરમાં આખું storage આ interface પાછળ ખસ્યું, અને agent loop નો code લગભગ અડ્યો નહીં. આ computer science નો જૂનો વિચાર છે: **cache અને disk**. નાનું, ઝડપી, મોંઘું (memory: હંમેશા context માં) અને મોટું, ધીમું, સસ્તું (database: માગો ત્યારે). દરેક સારી system બંને રાખે, અને મુખ્ય કળા એ નક્કી કરવાની છે કે **શું ક્યાં રહે**. અને એક સુરક્ષા વાત: sessions માં secrets અને અંગત વાતો હોય છે. Session storage doc એક guard વર્ણવે છે જે test process ને production `state.db` ખોલતાં **રોકે છે** — "a hard `RuntimeError`" — જેથી test નો નકલી ડેટા કદી જીવંત ઇતિહાસમાં ન ભળે.
 
 ## દૃશ્ય 5 — ફાઈલ ફોનમાં ન સમાય: compression
 
@@ -222,15 +238,16 @@ _PRUNED_TOOL_PLACEHOLDER = "[Old tool output cleared to save context space]"
 
 Snapshots એક અલગ **shadow git store** માં જાય છે, `~/.hermes/checkpoints/store/` — "your real project `.git` is never touched". બધા projects એક store વહેંચે, એટલે git ની content-addressed objects ડુપ્લિકેટ બચાવે.
 
-Code નું પ્રવેશદ્વાર ([checkpoint_manager.py][checkpoint-ensure]) ✅:
+Code નું પ્રવેશદ્વાર ([agent/checkpoints/manager.py][checkpoint-ensure]) ✅:
 
 ```python
-# Repository code — tools/checkpoint_manager.py
+# Repository code — agent/checkpoints/manager.py
 def ensure_checkpoint(self, working_dir: str, reason: str = "auto") -> bool:
     """Take a checkpoint if enabled and not already done this turn.
 
     Returns True if a checkpoint was taken, False otherwise.
-    Never raises — all errors are silently logged. ...
+    Never raises — all errors are silently logged. Never in a hosted scope: the working
+    directory is the agent's sandbox's, not this host's.
 ```
 
 પાછા વળવું ([commands][doc-checkpoints-cmds]) ✅ ⚠️:
@@ -253,7 +270,7 @@ def ensure_checkpoint(self, working_dir: str, reason: str = "auto") -> bool:
 2. [memory_tool_store.py — `ENTRY_DELIMITER`][memory-delim]
 3. [memory_tool_store.py — `add()`][memory-add]
 4. [memory_tool_store.py — `format_for_system_prompt()`][memory-format]
-5. [hermes_state.py — `SessionDB`][sessiondb-class]
+5. [persistence/core/backend.py — `PersistenceStore`][store-protocol] અને [SQLiteStore][sqlite-store]
 6. [Session storage doc — Hermes home][doc-session-home]
 7. [Compression doc — Configuration][doc-compress-config]
 8. [Compression doc — Algorithm][doc-compress-algo]
@@ -378,25 +395,27 @@ Memory · frozen snapshot · `§` delimiter · session · SQLite · FTS5 · WAL 
 → [પ્રકરણ 5 — રીત-પોથી: skills](05-reet-pothi-skills.md)
 
 <!-- refs:start (generated by tools/citations.py) -->
-[agent-flow-invariants]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/AGENTS.md#L55-L78
-[agents-verify-intent]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/AGENTS.md#L50-L52
-[checkpoint-ensure]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/checkpoint_manager.py#L1052-L1057
-[compress-defaults]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/config_defaults.py#L576-L590
-[compress-placeholder]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/agent/context_compressor.py#L840
-[doc-checkpoints]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/checkpoints-and-rollback.md#L27-L34
-[doc-checkpoints-cmds]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/checkpoints-and-rollback.md#L42-L46
-[doc-compress-algo]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L562-L573
-[doc-compress-boundaries]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L596-L619
-[doc-compress-config]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/context-compression-and-caching.md#L289-L318
-[doc-memory]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/memory.md#L11-L20
-[doc-memory-boundaries]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/memory.md#L59-L66
-[doc-memory-frozen]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/user-guide/features/memory.md#L57
-[doc-session-home]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/website/docs/developer-guide/session-storage.md#L16-L31
-[memory-add]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/memory_tool_store.py#L403-L414
-[memory-delim]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/memory_tool_store.py#L26
-[memory-format]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/memory_tool_store.py#L655-L658
-[memory-limits-default]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_cli/config_defaults.py#L1269-L1270
-[memory-snapshot]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/tools/memory_tool_store.py#L194
-[sessiondb-class]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_state.py#L476-L483
-[sessiondb-fts]: https://github.com/NousResearch/hermes-agent/blob/18e659dfc93ef319771d51441573e3fa31b8f5b7/hermes_state_fts.py#L46
+[agent-flow-invariants]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/agent/AGENTS.md#L55-L78
+[agents-verify-intent]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/AGENTS.md#L50-L52
+[checkpoint-ensure]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/agent/checkpoints/manager.py#L1040-L1045
+[compress-defaults]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_cli/config_defaults.py#L576-L590
+[compress-placeholder]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/agent/context_compressor.py#L758
+[doc-checkpoints]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/checkpoints-and-rollback.md#L27-L34
+[doc-checkpoints-cmds]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/checkpoints-and-rollback.md#L42-L46
+[doc-compress-algo]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/context-compression-and-caching.md#L564-L575
+[doc-compress-boundaries]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/context-compression-and-caching.md#L598-L621
+[doc-compress-config]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/context-compression-and-caching.md#L289-L318
+[doc-memory]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/features/memory.md#L11-L20
+[doc-memory-boundaries]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/features/memory.md#L59-L66
+[doc-memory-frozen]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/features/memory.md#L57
+[doc-session-home]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/session-storage.md#L16-L31
+[doc-storage-overview]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/session-storage.md#L122-L141
+[memory-add]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/tools/memory_tool_store.py#L403-L414
+[memory-delim]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/tools/memory_tool_store.py#L26
+[memory-format]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/tools/memory_tool_store.py#L655-L658
+[memory-limits-default]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_cli/config_defaults.py#L1269-L1270
+[memory-snapshot]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/tools/memory_tool_store.py#L194
+[sessiondb-fts]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/persistence/sqlite/_schema_ddl.py#L643
+[sqlite-store]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/persistence/sqlite/_backend.py#L316-L317
+[store-protocol]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/persistence/core/backend.py#L43-L58
 <!-- refs:end -->

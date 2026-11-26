@@ -18,7 +18,7 @@ import re
 import sys
 from pathlib import Path
 
-SHA = "18e659dfc93ef319771d51441573e3fa31b8f5b7"
+SHA = "93dd2a4efb0709ceac09969b85d306e768b53815"
 BASE = f"https://github.com/NousResearch/hermes-agent/blob/{SHA}/"
 ROOT = Path(__file__).resolve().parent.parent
 LOCK = ROOT / "tools" / "citations.lock.json"
@@ -30,7 +30,7 @@ CITES = [
     # --- project rules -------------------------------------------------------------------
     ("agents-invariants", "AGENTS.md", "Two invariants shape almost every design decision", 10),
     ("agents-footprint", "AGENTS.md", "**Footprint ladder**", 3),
-    ("agents-facade", "AGENTS.md", "### Facade + siblings layout", 16),
+    ("agents-facade", "AGENTS.md", "### Packages and Python shape", 24),
     ("agents-rejected", "AGENTS.md", "**Rejected even when well-built:**", 7),
     ("agents-verify-intent", "AGENTS.md", "**Before you call it a bug,**", 3),
     ("agents-tests-rule", "AGENTS.md", "- **Tests:** always `scripts/run_tests.sh`", 3),
@@ -81,8 +81,12 @@ CITES = [
     ("memory-snapshot", "tools/memory_tool_store.py", "self._system_prompt_snapshot: dict[str, str]", 1),
     ("memory-add", "tools/memory_tool_store.py", "    def add(self, target: str, content: str)", 12),
     ("memory-format", "tools/memory_tool_store.py", "    def format_for_system_prompt(", 4),
-    ("sessiondb-class", "hermes_state.py", "class SessionDB(", 8),
-    ("sessiondb-fts", "hermes_state_fts.py", "CREATE VIRTUAL TABLE messages_fts USING fts5", 1),
+    ("store-protocol", "persistence/core/backend.py", "class PersistenceStore(Protocol):", 16),
+    ("sqlite-store", "persistence/sqlite/_backend.py", "class SQLiteStore:", 2),
+    ("sessiondb-fts", "persistence/sqlite/_schema_ddl.py", "CREATE VIRTUAL TABLE IF NOT EXISTS messages_fts USING fts5(", 1),
+    ("hermes-state-shim", "hermes_state.py", '"""Compatibility module for outside plugins that still import', 7),
+    ("doc-storage-overview", D + "developer-guide/session-storage.md", "## Architecture Overview", 20),
+    ("doc-hermes-state-deprecated", D + "developer-guide/plugins/index.md", "### `hermes_state` deprecated: use the storage interface", 7),
     ("hermes-home", "hermes_constants.py", "def get_hermes_home() -> Path:", 6),
     ("compress-defaults", "hermes_cli/config_defaults.py", '"threshold": 0.50,', 15),
     ("compress-placeholder", "agent/context_compressor.py", "_PRUNED_TOOL_PLACEHOLDER = ", 1),
@@ -90,6 +94,7 @@ CITES = [
     ("skills-agents", "skills/AGENTS.md", "## Authoring standards (HARDLINE", 12),
     ("skills-curator", "skills/AGENTS.md", "## Curator (skill lifecycle)", 18),
     ("skills-desc-limit", "agent/skill_utils.py", "SKILL_PROMPT_DESC_LIMIT = 60", 1),
+    ("skills-index-desc-limit", "hermes_cli/config_defaults.py", '"index_desc_limit": 60,', 1),
     # --- gateway, cron, delegation -------------------------------------------------------
     ("gateway-authz", "gateway/authz_mixin.py", "    def _is_user_authorized(", 3),
     ("gateway-session-key", "gateway/session.py", "def build_session_key(", 4),
@@ -99,6 +104,7 @@ CITES = [
     ("cron-agent-build", "cron/scheduler.py", "# Project context files only with a configured workdir; SOUL.md always.", 6),
     ("delegate-blocked", "tools/delegate_tool_toolsets.py", "DELEGATE_BLOCKED_TOOLS = frozenset(", 10),
     ("delegate-maxiter", "tools/delegate_tool.py", "DEFAULT_MAX_ITERATIONS = 250", 1),
+    ("delegate-role-depth", "tools/delegate_tool.py", "# Role is depth-derived: a child may delegate iff", 5),
     ("delegate-config-default", "hermes_cli/config_defaults.py", '"max_iterations": 250,', 1),
     ("delegate-concurrent", "tools/delegate_tool_config.py", "_DEFAULT_MAX_CONCURRENT_CHILDREN = 10", 1),
     # --- plugins -------------------------------------------------------------------------
@@ -109,6 +115,7 @@ CITES = [
     ("doc-architecture", D + "developer-guide/architecture.md", "## System Overview", 4),
     ("doc-arch-principles", D + "developer-guide/architecture.md", "## Design Principles", 11),
     ("doc-arch-depchain", D + "developer-guide/architecture.md", "## File Dependency Chain", 13),
+    ("doc-arch-persistence", D + "developer-guide/architecture.md", "├── persistence/              # Storage contracts", 2),
     ("doc-loop-lifecycle", D + "developer-guide/agent-loop.md", "## Turn Lifecycle", 20),
     ("doc-loop-alternation", D + "developer-guide/agent-loop.md", "### Message Alternation Rules", 11),
     ("doc-loop-concurrent", D + "developer-guide/agent-loop.md", "### Sequential vs Concurrent", 8),
@@ -127,6 +134,8 @@ CITES = [
     ("doc-compress-boundaries", D + "developer-guide/context-compression-and-caching.md", "### Phase 2: Determine Boundaries", 24),
     ("doc-cache", D + "developer-guide/context-compression-and-caching.md", "## Prompt Caching (Anthropic)", 18),
     ("doc-cache-patterns", D + "developer-guide/context-compression-and-caching.md", "### Cache-Aware Design Patterns", 26),
+    ("doc-cache-ttl", D + "developer-guide/context-compression-and-caching.md", "4. **TTL selection**: Default is `auto`", 3),
+    ("cache-ttl-default", "hermes_cli/config_defaults.py", '"prompt_caching": {"cache_ttl": "auto"', 1),
     ("doc-session-home", D + "developer-guide/session-storage.md", "## Hermes home and profile isolation", 16),
     ("doc-skills-disclosure", D + "user-guide/features/skills.md", "## Progressive Disclosure", 22),
     ("doc-skills-format", D + "user-guide/features/skills.md", "## SKILL.md Format", 36),
@@ -154,7 +163,7 @@ CITES = [
     ("doc-tool-search-how", D + "user-guide/features/tool-search.md", "When Tool Search activates for a turn", 7),
     ("doc-checkpoints", D + "user-guide/checkpoints-and-rollback.md", "## What Triggers a Checkpoint", 8),
     ("doc-checkpoints-cmds", D + "user-guide/checkpoints-and-rollback.md", "| `/rollback` | List all", 5),
-    ("checkpoint-ensure", "tools/checkpoint_manager.py", "    def ensure_checkpoint(self, working_dir: str", 6),
+    ("checkpoint-ensure", "agent/checkpoints/manager.py", "    def ensure_checkpoint(self, working_dir: str", 6),
     ("mcp-prefix", "tools/mcp_tool_schema.py", "def mcp_prefixed_tool_name(", 5),
     ("doc-mcp-quickstart", D + "user-guide/features/mcp.md", "## Quick start", 12),
     ("doc-mcp-registers", D + "user-guide/features/mcp.md", "## How Hermes registers MCP tools", 7),

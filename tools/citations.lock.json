@@ -1,5 +1,5 @@
 {
- "sha": "18e659dfc93ef319771d51441573e3fa31b8f5b7",
+ "sha": "93dd2a4efb0709ceac09969b85d306e768b53815",
  "cites": {
   "agents-invariants": {
    "path": "AGENTS.md",
@@ -16,8 +16,8 @@
   "agents-facade": {
    "path": "AGENTS.md",
    "start": 94,
-   "end": 109,
-   "needle": "### Facade + siblings layout"
+   "end": 117,
+   "needle": "### Packages and Python shape"
   },
   "agents-rejected": {
    "path": "AGENTS.md",
@@ -33,8 +33,8 @@
   },
   "agents-tests-rule": {
    "path": "AGENTS.md",
-   "start": 139,
-   "end": 141,
+   "start": 146,
+   "end": 148,
    "needle": "- **Tests:** always `scripts/run_tests.sh`"
   },
   "agent-shape": {
@@ -81,26 +81,26 @@
   },
   "facade-chat": {
    "path": "agent/turn_facade.py",
-   "start": 220,
-   "end": 222,
+   "start": 246,
+   "end": 248,
    "needle": "def chat(self, message: str"
   },
   "loop-while": {
    "path": "agent/conversation_loop.py",
-   "start": 1752,
-   "end": 1754,
+   "start": 1724,
+   "end": 1726,
    "needle": "while _prelude_action != \"break\" and ("
   },
   "loop-branch": {
    "path": "agent/conversation_loop.py",
-   "start": 1789,
-   "end": 1790,
+   "start": 1762,
+   "end": 1763,
    "needle": "run_tool_round if s.assistant_message.tool_calls else finish_text_response"
   },
   "loop-runconv": {
    "path": "agent/conversation_loop.py",
-   "start": 1809,
-   "end": 1832,
+   "start": 1782,
+   "end": 1805,
    "needle": "def run_conversation("
   },
   "budget-doc": {
@@ -117,8 +117,8 @@
   },
   "turn-unlimited": {
    "path": "hermes_cli/config.py",
-   "start": 1610,
-   "end": 1610,
+   "start": 1609,
+   "end": 1609,
    "needle": "TURN_LIMIT_UNLIMITED = sys.maxsize"
   },
   "config-max-turns": {
@@ -129,38 +129,38 @@
   },
   "interruptible-call": {
    "path": "agent/chat_completion_helpers.py",
-   "start": 1258,
-   "end": 1261,
+   "start": 1256,
+   "end": 1259,
    "needle": "def interruptible_api_call(agent, api_kwargs: dict):"
   },
   "prompt-parts": {
    "path": "agent/system_prompt.py",
-   "start": 751,
-   "end": 758,
+   "start": 770,
+   "end": 777,
    "needle": "def build_system_prompt_parts("
   },
   "prompt-volatile": {
    "path": "agent/system_prompt.py",
-   "start": 800,
-   "end": 800,
+   "start": 819,
+   "end": 819,
    "needle": "volatile_parts: list[str] = [skills_prompt"
   },
   "prompt-build": {
    "path": "agent/system_prompt.py",
-   "start": 817,
-   "end": 826,
+   "start": 836,
+   "end": 845,
    "needle": "def build_system_prompt(agent: Any"
   },
   "prompt-invalidate": {
    "path": "agent/system_prompt.py",
-   "start": 829,
-   "end": 832,
+   "start": 848,
+   "end": 851,
    "needle": "def invalidate_system_prompt(agent: Any)"
   },
   "prompt-identity": {
    "path": "agent/system_prompt.py",
-   "start": 563,
-   "end": 569,
+   "start": 576,
+   "end": 582,
    "needle": "def _identity_parts("
   },
   "prompt-default-identity": {
@@ -171,14 +171,14 @@
   },
   "prompt-soul": {
    "path": "agent/prompt_builder.py",
-   "start": 1520,
-   "end": 1521,
+   "start": 1523,
+   "end": 1524,
    "needle": "def load_soul_md("
   },
   "prompt-cache-apply": {
    "path": "agent/prompt_caching.py",
-   "start": 367,
-   "end": 372,
+   "start": 503,
+   "end": 508,
    "needle": "def apply_anthropic_cache_control("
   },
   "hint-cap": {
@@ -195,20 +195,20 @@
   },
   "registry-register": {
    "path": "tools/registry.py",
-   "start": 845,
-   "end": 854,
+   "start": 840,
+   "end": 849,
    "needle": "    def register("
   },
   "registry-getdefs": {
    "path": "tools/registry.py",
-   "start": 1034,
-   "end": 1047,
+   "start": 1016,
+   "end": 1029,
    "needle": "    def get_definitions("
   },
   "registry-dispatch": {
    "path": "tools/registry.py",
-   "start": 1084,
-   "end": 1119,
+   "start": 1076,
+   "end": 1111,
    "needle": "    def dispatch("
   },
   "toolsets-core": {
@@ -219,38 +219,38 @@
   },
   "todo-register": {
    "path": "tools/todo_tool.py",
-   "start": 332,
-   "end": 336,
+   "start": 341,
+   "end": 345,
    "needle": "registry.register("
   },
   "inline-exec": {
    "path": "agent/inline_tool_executors.py",
-   "start": 300,
-   "end": 314,
+   "start": 301,
+   "end": 315,
    "needle": "_RAW_INLINE_TOOL_EXECUTORS: dict"
   },
   "handle-fc": {
    "path": "model_tools.py",
-   "start": 908,
-   "end": 925,
+   "start": 906,
+   "end": 923,
    "needle": "def handle_function_call("
   },
   "approval-hardline": {
    "path": "tools/approval_detection.py",
-   "start": 187,
-   "end": 192,
+   "start": 176,
+   "end": 181,
    "needle": "HARDLINE_PATTERNS = ["
   },
   "approval-dangerous": {
    "path": "tools/approval_detection.py",
-   "start": 589,
-   "end": 593,
+   "start": 498,
+   "end": 502,
    "needle": "DANGEROUS_PATTERNS = ["
   },
   "approval-detect": {
    "path": "tools/approval_detection.py",
-   "start": 2030,
-   "end": 2043,
+   "start": 1900,
+   "end": 1913,
    "needle": "def detect_dangerous_command("
   },
   "memory-limits-default": {
@@ -289,22 +289,46 @@
    "end": 658,
    "needle": "    def format_for_system_prompt("
   },
-  "sessiondb-class": {
-   "path": "hermes_state.py",
-   "start": 476,
-   "end": 483,
-   "needle": "class SessionDB("
+  "store-protocol": {
+   "path": "persistence/core/backend.py",
+   "start": 43,
+   "end": 58,
+   "needle": "class PersistenceStore(Protocol):"
+  },
+  "sqlite-store": {
+   "path": "persistence/sqlite/_backend.py",
+   "start": 316,
+   "end": 317,
+   "needle": "class SQLiteStore:"
   },
   "sessiondb-fts": {
-   "path": "hermes_state_fts.py",
-   "start": 46,
-   "end": 46,
-   "needle": "CREATE VIRTUAL TABLE messages_fts USING fts5"
+   "path": "persistence/sqlite/_schema_ddl.py",
+   "start": 643,
+   "end": 643,
+   "needle": "CREATE VIRTUAL TABLE IF NOT EXISTS messages_fts USING fts5("
+  },
+  "hermes-state-shim": {
+   "path": "hermes_state.py",
+   "start": 1,
+   "end": 7,
+   "needle": "\"\"\"Compatibility module for outside plugins that still import"
+  },
+  "doc-storage-overview": {
+   "path": "website/docs/developer-guide/session-storage.md",
+   "start": 122,
+   "end": 141,
+   "needle": "## Architecture Overview"
+  },
+  "doc-hermes-state-deprecated": {
+   "path": "website/docs/developer-guide/plugins/index.md",
+   "start": 315,
+   "end": 321,
+   "needle": "### `hermes_state` deprecated: use the storage interface"
   },
   "hermes-home": {
    "path": "hermes_constants.py",
-   "start": 206,
-   "end": 211,
+   "start": 208,
+   "end": 213,
    "needle": "def get_hermes_home() -> Path:"
   },
   "compress-defaults": {
@@ -315,8 +339,8 @@
   },
   "compress-placeholder": {
    "path": "agent/context_compressor.py",
-   "start": 840,
-   "end": 840,
+   "start": 758,
+   "end": 758,
    "needle": "_PRUNED_TOOL_PLACEHOLDER = "
   },
   "skills-agents": {
@@ -336,6 +360,12 @@
    "start": 846,
    "end": 846,
    "needle": "SKILL_PROMPT_DESC_LIMIT = 60"
+  },
+  "skills-index-desc-limit": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 1400,
+   "end": 1400,
+   "needle": "\"index_desc_limit\": 60,"
   },
   "gateway-authz": {
    "path": "gateway/authz_mixin.py",
@@ -369,8 +399,8 @@
   },
   "cron-agent-build": {
    "path": "cron/scheduler.py",
-   "start": 2505,
-   "end": 2510,
+   "start": 2468,
+   "end": 2473,
    "needle": "# Project context files only with a configured workdir; SOUL.md always."
   },
   "delegate-blocked": {
@@ -381,9 +411,15 @@
   },
   "delegate-maxiter": {
    "path": "tools/delegate_tool.py",
-   "start": 106,
-   "end": 106,
+   "start": 108,
+   "end": 108,
    "needle": "DEFAULT_MAX_ITERATIONS = 250"
+  },
+  "delegate-role-depth": {
+   "path": "tools/delegate_tool.py",
+   "start": 252,
+   "end": 256,
+   "needle": "# Role is depth-derived: a child may delegate iff"
   },
   "delegate-config-default": {
    "path": "hermes_cli/config_defaults.py",
@@ -405,14 +441,14 @@
   },
   "plugin-register-tool": {
    "path": "hermes_cli/plugins_context.py",
-   "start": 272,
-   "end": 277,
+   "start": 282,
+   "end": 287,
    "needle": "    def register_tool("
   },
   "plugin-register-hook": {
    "path": "hermes_cli/plugins_context.py",
-   "start": 753,
-   "end": 754,
+   "start": 799,
+   "end": 800,
    "needle": "    def register_hook(self, hook_name: str"
   },
   "doc-architecture": {
@@ -423,15 +459,21 @@
   },
   "doc-arch-principles": {
    "path": "website/docs/developer-guide/architecture.md",
-   "start": 260,
-   "end": 270,
+   "start": 261,
+   "end": 271,
    "needle": "## Design Principles"
   },
   "doc-arch-depchain": {
    "path": "website/docs/developer-guide/architecture.md",
-   "start": 271,
-   "end": 283,
+   "start": 272,
+   "end": 284,
    "needle": "## File Dependency Chain"
+  },
+  "doc-arch-persistence": {
+   "path": "website/docs/developer-guide/architecture.md",
+   "start": 59,
+   "end": 60,
+   "needle": "├── persistence/              # Storage contracts"
   },
   "doc-loop-lifecycle": {
    "path": "website/docs/developer-guide/agent-loop.md",
@@ -483,8 +525,8 @@
   },
   "doc-security-authz": {
    "path": "website/docs/user-guide/security.md",
-   "start": 473,
-   "end": 482,
+   "start": 476,
+   "end": 485,
    "needle": "### Authorization Check Order"
   },
   "doc-memory": {
@@ -519,27 +561,39 @@
   },
   "doc-compress-algo": {
    "path": "website/docs/developer-guide/context-compression-and-caching.md",
-   "start": 562,
-   "end": 573,
+   "start": 564,
+   "end": 575,
    "needle": "## Compression Algorithm"
   },
   "doc-compress-boundaries": {
    "path": "website/docs/developer-guide/context-compression-and-caching.md",
-   "start": 596,
-   "end": 619,
+   "start": 598,
+   "end": 621,
    "needle": "### Phase 2: Determine Boundaries"
   },
   "doc-cache": {
    "path": "website/docs/developer-guide/context-compression-and-caching.md",
-   "start": 794,
-   "end": 811,
+   "start": 796,
+   "end": 813,
    "needle": "## Prompt Caching (Anthropic)"
   },
   "doc-cache-patterns": {
    "path": "website/docs/developer-guide/context-compression-and-caching.md",
-   "start": 834,
-   "end": 859,
+   "start": 836,
+   "end": 861,
    "needle": "### Cache-Aware Design Patterns"
+  },
+  "doc-cache-ttl": {
+   "path": "website/docs/developer-guide/context-compression-and-caching.md",
+   "start": 849,
+   "end": 851,
+   "needle": "4. **TTL selection**: Default is `auto`"
+  },
+  "cache-ttl-default": {
+   "path": "hermes_cli/config_defaults.py",
+   "start": 689,
+   "end": 689,
+   "needle": "\"prompt_caching\": {\"cache_ttl\": \"auto\""
   },
   "doc-session-home": {
    "path": "website/docs/developer-guide/session-storage.md",
@@ -549,20 +603,20 @@
   },
   "doc-skills-disclosure": {
    "path": "website/docs/user-guide/features/skills.md",
-   "start": 172,
-   "end": 193,
+   "start": 173,
+   "end": 194,
    "needle": "## Progressive Disclosure"
   },
   "doc-skills-format": {
    "path": "website/docs/user-guide/features/skills.md",
-   "start": 194,
-   "end": 229,
+   "start": 195,
+   "end": 230,
    "needle": "## SKILL.md Format"
   },
   "doc-skills-agent": {
    "path": "website/docs/user-guide/features/skills.md",
-   "start": 606,
-   "end": 625,
+   "start": 607,
+   "end": 626,
    "needle": "## Agent-Managed Skills (skill_manage tool)"
   },
   "doc-delegation": {
@@ -585,8 +639,8 @@
   },
   "doc-gateway-key": {
    "path": "website/docs/developer-guide/gateway-internals.md",
-   "start": 688,
-   "end": 688,
+   "start": 694,
+   "end": 694,
    "needle": "Resolve session key via `_session_key_for_source()`"
   },
   "doc-cli-gateway-client": {
@@ -597,32 +651,32 @@
   },
   "doc-plugin-guide": {
    "path": "website/docs/developer-guide/plugins/index.md",
-   "start": 353,
-   "end": 368,
+   "start": 454,
+   "end": 469,
    "needle": "## Step 2: Write the manifest"
   },
   "doc-plugin-handlers": {
    "path": "website/docs/developer-guide/plugins/index.md",
-   "start": 887,
-   "end": 895,
+   "start": 988,
+   "end": 996,
    "needle": "**Key rules for handlers:**"
   },
   "doc-plugin-register": {
    "path": "website/docs/developer-guide/plugins/index.md",
-   "start": 903,
-   "end": 940,
+   "start": 1004,
+   "end": 1041,
    "needle": "## Step 5: Write the registration"
   },
   "doc-plugin-hooks": {
    "path": "website/docs/developer-guide/plugins/index.md",
-   "start": 1602,
-   "end": 1613,
+   "start": 1746,
+   "end": 1757,
    "needle": "### Hook reference"
   },
   "doc-plugin-doctor": {
    "path": "website/docs/developer-guide/plugins/index.md",
-   "start": 332,
-   "end": 351,
+   "start": 433,
+   "end": 452,
    "needle": "### Validate with Plugin Doctor"
   },
   "doc-profiles": {
@@ -639,8 +693,8 @@
   },
   "api-max-retries": {
    "path": "hermes_cli/config_defaults.py",
-   "start": 122,
-   "end": 122,
+   "start": 121,
+   "end": 121,
    "needle": "\"api_max_retries\": 3,"
   },
   "doc-fallback-internals": {
@@ -657,8 +711,8 @@
   },
   "exec-sandbox-tools": {
    "path": "tools/code_execution_tool.py",
-   "start": 43,
-   "end": 51,
+   "start": 40,
+   "end": 48,
    "needle": "SANDBOX_ALLOWED_TOOLS = frozenset(["
   },
   "doc-code-exec": {
@@ -698,9 +752,9 @@
    "needle": "| `/rollback` | List all"
   },
   "checkpoint-ensure": {
-   "path": "tools/checkpoint_manager.py",
-   "start": 1052,
-   "end": 1057,
+   "path": "agent/checkpoints/manager.py",
+   "start": 1040,
+   "end": 1045,
    "needle": "    def ensure_checkpoint(self, working_dir: str"
   },
   "mcp-prefix": {
@@ -717,8 +771,8 @@
   },
   "doc-mcp-registers": {
    "path": "website/docs/user-guide/features/mcp.md",
-   "start": 569,
-   "end": 575,
+   "start": 570,
+   "end": 576,
    "needle": "## How Hermes registers MCP tools"
   },
   "doc-mcp-trust": {

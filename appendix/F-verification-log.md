@@ -32,6 +32,7 @@
 - `mehmaan-tally` plugin નું ખરા Hermes માં loading (`hermes plugins doctor`).
 - `lagna-mehmaan-yadi` skill નું ખરા session માં loading.
 - પ્રકરણ 0 ની આગાહી કસોટી (`HERMES_HOME=… hermes chat -q`).
+- Windows install અને Windows પર labs (`py labs\run_all.py`). Runner Linux પર ચલાવ્યો 🧪, અને Windows ના cp1252 console ની નકલ (`PYTHONIOENCODING=cp1252`) સાથે પહેલી lab `UnicodeEncodeError` આપે છે અને runner ના UTF-8 settings સાથે સાચું છાપે છે, તે ચકાસ્યું 🧪. ખરા Windows machine પર ⚠️.
 - Compression trigger નું small-window floor (0.75) વર્તન.
 - Checkpoints અને `/rollback` (opt-in feature).
 - `execute_code` અને Tool Search નું ખરું વર્તન (book lab ફક્ત વિચાર બતાવે છે).

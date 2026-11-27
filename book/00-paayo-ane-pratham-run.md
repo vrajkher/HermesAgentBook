@@ -8,7 +8,7 @@
 
 ## 🎯 આ પ્રકરણ પછી તમે શું કરી શકશો
 
-- Hermes install કરી, પહેલી વાતચીત શરૂ કરવાના commands કહી શકશો.
+- Linux/macOS અને **Windows** પર Hermes install કરી, પહેલી વાતચીત શરૂ કરવાના commands કહી શકશો.
 - `~/.hermes` ની દરેક મુખ્ય file નું કામ કહી શકશો, અને "settings ક્યાં, secrets ક્યાં" નો નિયમ સમજાવી શકશો.
 - Source ને ચોક્કસ commit પર **pin** કરી શકશો, જેથી આ પુસ્તકની દરેક link તમારા computer પર એ જ line બતાવે.
 - Facade અને topic folders ની ગોઠવણ સમજી, કોઈ પણ function ને `grep` થી શોધી શકશો.
@@ -18,7 +18,7 @@
 
 | # | દૃશ્ય | Hermes માં |
 |---|---|---|
-| 1 | નવો માણસ ઑફિસમાં | Install, `hermes setup`, `hermes doctor` |
+| 1 | નવો માણસ ઑફિસમાં (અને ઈશાનું Windows laptop) | Install, `hermes setup`, `hermes doctor`; Windows પર PowerShell |
 | 2 | તિજોરી અને નોટિસ-બોર્ડ | `.env` (secrets) vs `config.yaml` (વર્તન) |
 | 3 | "ઑફિસ ક્યાં છે?" | `get_hermes_home()` અને profiles |
 | 4 | એ જ દિવસનો ફોટો | Commit pinning |
@@ -63,6 +63,59 @@ hermes doctor
 ⚠️ **Installer વિશે.** `curl … | bash` internet પરથી script લાવીને ચલાવે છે. Expert તેને પહેલાં **વાંચે** છે. અને Hermes model એ બનાવેલા commands ચલાવી શકે છે; [SECURITY.md](https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/SECURITY.md) પહેલાં વાંચો.
 
 🔬 **Expert નજર.** `hermes chat` terminal ની અંદર agent ચલાવતું **નથી**. Docs કહે છે: classic CLI એક **gateway client** છે; તે profile નો gateway શોધે કે શરૂ કરે, session ત્યાં બનાવે, અને local WebSocket પર જોડાય ([CLI doc][doc-cli-gateway-client]) ✅. Terminal બંધ કરો તો કામ અટકતું નથી. વાર્તામાં: ગ્રાહક ફોન મૂકી દે, તો પણ હર્ષ કામ પૂરું કરે છે. આ વાત પ્રકરણ 6 માં ફરી આવશે.
+
+### 🪟 Windows પર: ઈશાનું પોતાનું laptop
+
+🎬 ઈશાનું laptop **Windows 11** છે. નિખિલમામાનો Linux command ત્યાં ચાલતો નથી. ઈશા પૂછે છે: "મારે Linux શીખવું પડશે?"
+
+"ના. Hermes Windows પર **સીધું** ચાલે છે. ફક્ત દરવાજો જુદો છે: bash ને બદલે **PowerShell**."
+
+💻 README અને Windows guide નો રસ્તો ([README — Windows][readme-windows], [Windows guide][doc-win-quick]) ✅ ⚠️ (Windows પર ચલાવીને ચકાસ્યું નથી):
+
+**1. Install.** Start menu માં **PowerShell** (કે Windows Terminal) ખોલો — admin તરીકે **નહીં**:
+
+```powershell
+iex (irm https://hermes-agent.nousresearch.com/install.ps1)
+```
+
+Guide: "No admin rights required." Installer `%LOCALAPPDATA%\hermes\` માં install કરે છે અને `hermes` ને તમારા **User PATH** માં ઉમેરે છે.
+
+**2. નવી બારી ખોલો.** જૂની PowerShell બારીને નવા PATH ની ખબર નથી ([PATH after install][doc-win-path]) ✅. નવી બારીમાં ચકાસો:
+
+```powershell
+Get-Command hermes
+```
+
+```powershell
+hermes --version
+```
+
+**3. પહેલી વાત.** બાકીનું Linux જેવું જ: `hermes setup`, પછી `hermes`.
+
+Installer અંદર શું કરે છે ([guide][doc-win-installer-steps]) ✅, ટૂંકમાં: Git શોધે (ન હોય તો Hermes ના પોતાના tool store માં verified Git for Windows મૂકે), source clone કરે, Python 3.14 અને બીજાં tools તૈયાર કરે, `bin` માં `hermes` launcher બનાવીને PATH માં ઉમેરે, અને setup ચલાવે.
+
+**Windows પર ઘર ક્યાં?** પ્રકરણ 0 નું `~/.hermes` Windows પર `%LOCALAPPDATA%\hermes\` છે ([data layout][doc-win-data]) ✅: config, `.env`, sessions, skills, plugins, logs બધું ત્યાં. દૃશ્ય 3 નો `get_hermes_home()` આ જ જગ્યા આપે છે.
+
+| પ્રશ્ન | Windows પર જવાબ |
+|---|---|
+| Admin જોઈએ? | ના |
+| ઘર | `%LOCALAPPDATA%\hermes\` |
+| Agent shell commands શેમાં ચલાવે? | **Git Bash** માં ([guide][doc-win-gitbash]) ✅ — એટલે agent ના Linux-શૈલીના commands Windows પર પણ ચાલે |
+| ગુજરાતી અક્ષર `?` દેખાય? | Hermes console ને UTF-8 પર ફેરવે છે ([guide][doc-win-utf8], [`configure_windows_stdio()`][win-stdio]) ✅; છતાં `?` દેખાય તો જૂના `cmd.exe` ને બદલે **Windows Terminal** વાપરો |
+| Login વખતે gateway આપમેળે? | `hermes gateway install` — Windows **Scheduled Task** થી, admin વગર ([guide][doc-win-gateway]) ✅ |
+| Microsoft Store / MSIX? | અલગ package; **Windows 11 22H2 કે નવું** જોઈએ ([guide][doc-win-msix]) ✅. Windows 10 પર ઉપરનો PowerShell installer કે WSL2 |
+| WSL2 ગમે છે? | Linux command WSL2 માં ચાલે; native અને WSL ની data અલગ રહે ([guide][doc-win-wsl]) ✅ |
+| કાઢી નાખવું | `hermes uninstall --dry-run` પહેલાં, પછી `hermes uninstall` ([guide][doc-win-uninstall]) ✅. `%LOCALAPPDATA%\hermes` folder હાથે delete **ન** કરો: તેમાં તમારી sessions અને memory છે |
+
+**ત્રણ સામાન્ય અડચણ** ([common pitfalls][doc-win-pitfalls]) ✅:
+
+| લક્ષણ | કારણ | ઉપાય |
+|---|---|---|
+| Install પછી તરત `hermes` ઓળખાતું નથી | જૂની બારીમાં જૂનો PATH | નવી PowerShell બારી ખોલો |
+| Antivirus `uv.exe` ને રોકે છે | Hermes ના `bin` માંનું Rust tool; README તેને false positive કહે છે ([README][readme-uv]) ✅ | README ના "Troubleshooting" માં verification અને folder whitelist ના પગલાં |
+| ગુજરાતી/હિન્દી અક્ષર `?` | જૂનું console | Windows Terminal |
+
+🔬 **Expert નજર.** Windows પર Hermes ત્રણ જુદી રીતે પ્રકરણ 0 ના નિયમો પાળે છે. **(1) ઘર એક જ function થી:** path જુદો, પણ `get_hermes_home()` એ જ; code માં `~/.hermes` hardcode હોત, તો Windows પર બધું તૂટત. **(2) Secrets તિજોરીમાં જ:** guide ચેતવે છે કે API keys Windows ના User environment variables માં ન મૂકો, કારણ કે ત્યાં "every Windows process" તેને જુએ; `%LOCALAPPDATA%\hermes\.env` માં મૂકો. **(3) ઓછામાં ઓછો અધિકાર:** installer admin નથી માગતો, અને login વખતે ચાલતો gateway પણ "never runs elevated". જે program ને admin ની જરૂર નથી, તેને admin આપવું એ ઘરની બધી ચાવીઓ મહેમાનને આપવા જેવું છે.
 
 ## દૃશ્ય 2 — તિજોરી અને નોટિસ-બોર્ડ: secrets ક્યાં, settings ક્યાં
 
@@ -226,7 +279,8 @@ Plugin guide નો નિયમ ([link][doc-hermes-state-deprecated]) ✅: પ�
 4. [hermes_constants.py — `get_hermes_home()`][hermes-home]
 5. [Architecture doc — System Overview][doc-architecture]
 6. [Architecture doc — Design Principles][doc-arch-principles]
-7. [hermes_state.py — deprecation stand-in][hermes-state-shim] અને [plugin guide — storage interface][doc-hermes-state-deprecated]
+7. [Windows guide — Quick install][doc-win-quick] અને [data layout][doc-win-data]
+8. [hermes_state.py — deprecation stand-in][hermes-state-shim] અને [plugin guide — storage interface][doc-hermes-state-deprecated]
 
 ## 🧪 Lab 0 — ઘર ઓળખો (Hermes install વગર પણ)
 
@@ -236,7 +290,23 @@ Plugin guide નો નિયમ ([link][doc-hermes-state-deprecated]) ✅: પ�
 bash labs/run-all.sh
 ```
 
-છેલ્લી line: `બધી labs પાસ.` આ command આઠેય labs ચલાવે છે અને outputs `evidence/` માં લખે છે.
+છેલ્લી line: `બધી labs પાસ.` આ command નવેય labs ચલાવે છે અને outputs `evidence/` માં લખે છે.
+
+**Windows પર (PowerShell):** Python [python.org](https://www.python.org/downloads/) પરથી install કરો; Windows પર command `python3` ને બદલે સામાન્ય રીતે `py` છે. બધી labs માટે `bash` ને બદલે Python runner વાપરો, જે Windows ના console માં ગુજરાતી સાચું છાપે છે:
+
+```powershell
+py labs\run_all.py
+```
+
+એ જ runner macOS/Linux પર `python3 labs/run_all.py` થી ચાલે છે. 🧪 (Linux પર ચલાવ્યો; Windows પર ⚠️)
+
+**આ runner કેમ?** Windows નું console ઘણી વાર જૂનું "code page" (cp1252) વાપરે છે, જેમાં ગુજરાતી અક્ષર નથી. તેવા console ની નકલ કરીને પહેલી lab ચલાવી, તો 🧪:
+
+```text
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 7: character maps to <undefined>
+```
+
+Runner દરેક lab ને `PYTHONUTF8=1` સાથે ચલાવે છે, અને એ જ lab સાચું છાપે છે. Hermes પોતે Windows પર આ જ કરે છે ([`configure_windows_stdio()`][win-stdio]) ✅: પ્રકરણ 3 નું "ભૂલ જ્યાં જન્મે ત્યાં જ પકડો", console ના દરવાજે.
 
 **ભાગ B — pinned source વાંચો.** Hermes clone કરીને pin કરો (દૃશ્ય 4), પછી **પહેલાં ધારો, પછી ચલાવો** ⚠️:
 
@@ -323,7 +393,21 @@ Profile · `HERMES_HOME` · commit · pin · facade · topic module · lint rule
 [doc-profiles]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/profiles.md#L48
 [doc-session-home]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/developer-guide/session-storage.md#L16-L31
 [doc-which-file]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/which-file-does-what.md#L11-L24
+[doc-win-data]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L298-L306
+[doc-win-gateway]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L218-L226
+[doc-win-gitbash]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L155-L157
+[doc-win-installer-steps]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L100-L109
+[doc-win-msix]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L51-L59
+[doc-win-path]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L327-L336
+[doc-win-pitfalls]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L391-L394
+[doc-win-quick]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L18-L26
+[doc-win-uninstall]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L358-L369
+[doc-win-utf8]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L171-L180
+[doc-win-wsl]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/website/docs/user-guide/windows-native.md#L14-L16
 [hermes-home]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_constants.py#L208-L213
 [hermes-state-shim]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_state.py#L1-L7
 [readme-getting-started]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/README.md#L107-L119
+[readme-uv]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/README.md#L72-L74
+[readme-windows]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/README.md#L43-L60
+[win-stdio]: https://github.com/NousResearch/hermes-agent/blob/93dd2a4efb0709ceac09969b85d306e768b53815/hermes_cli/stdio.py#L47
 <!-- refs:end -->

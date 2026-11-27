@@ -6,7 +6,8 @@
 
 | Command | શું |
 |---|---|
-| `bash labs/run-all.sh` | આઠેય labs; outputs `evidence/` માં |
+| `bash labs/run-all.sh` | નવેય labs; outputs `evidence/` માં |
+| `py labs\run_all.py` (Windows), `python3 labs/run_all.py` | એ જ, bash વગર; Windows console માં ગુજરાતી સાચું |
 | `python3 labs/pravesh/toy_agent.py` | 45-line agent |
 | `python3 labs/01-loop/mini_loop.py` | Budget, parallel order, alternation |
 | `python3 labs/02-prompt/cache_sim.py` | Prefix cache ના ત્રણ scenarios |
@@ -38,6 +39,16 @@
 | `hermes curator status\|run\|pin\|unpin\|archive\|restore\|rollback` | Skill lifecycle | 5 |
 | `hermes plugins install\|list\|enable\|doctor\|validate` | Plugins | 7 |
 | `hermes update` | Update | — |
+
+## Windows (PowerShell) ⚠️
+
+| Command | શું | પ્રકરણ |
+|---|---|---|
+| `iex (irm https://hermes-agent.nousresearch.com/install.ps1)` | Install, admin વગર, `%LOCALAPPDATA%\hermes\` માં | 0 |
+| `Get-Command hermes` | નવી બારીમાં install ચકાસો | 0 |
+| `hermes gateway install` | Login વખતે gateway (Scheduled Task) | 0, 6 |
+| `hermes gateway status` | Task, Startup entry અને ચાલતો PID એકસાથે | 6 |
+| `hermes uninstall --dry-run` | કાઢતાં પહેલાં શું જશે તે જુઓ | 0 |
 
 ## Slash commands (વાતચીતની અંદર) ⚠️
 

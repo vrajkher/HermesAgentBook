@@ -65,6 +65,8 @@ python3 --version
 - `ls` = "અહીં શું શું છે?"
 - `python3 --version` = "Python નો કયો version છે?" આ પુસ્તકની labs Python 3.11 કે નવા પર ચાલે છે. 🧪 (લખતી વખતે: `Python 3.13.18`)
 
+**Windows પર** terminal એટલે **PowerShell** (કે Windows Terminal). `pwd` અને `ls` ત્યાં પણ ચાલે છે; Python માટે `python3` ને બદલે `py --version` લખો. Path માં `/` ને બદલે `\` આવે: `labs\pravesh\toy_agent.py`. ⚠️ (Windows પર ચલાવીને ચકાસ્યું નથી)
+
 Command પૂરો થાય ત્યારે એક **exit code** આપે: `0` એટલે "બરાબર", બીજું કંઈ પણ એટલે "ગરબડ".
 
 🔬 **Expert નજર.** Agent માટે terminal સૌથી શક્તિશાળી ઓજાર છે: જે તમે terminal માં કરી શકો, તે agent પણ કરી શકે. એટલે જ સૌથી જોખમી પણ. Hermes ના `terminal` tool ની આગળ એક આખી સુરક્ષા-ચોકી છે (પ્રકરણ 3).
@@ -181,6 +183,14 @@ def run(user_message):
 ```bash
 python3 labs/pravesh/toy_agent.py
 ```
+
+Windows (PowerShell) પર:
+
+```powershell
+$env:PYTHONUTF8 = "1"; py labs\pravesh\toy_agent.py
+```
+
+`PYTHONUTF8 = "1"` વગર Windows નું જૂનું console ગુજરાતી છાપતાં ભૂલ આપી શકે (પ્રકરણ 0, Lab 0).
 
 અપેક્ષિત output 🧪 ([evidence](../evidence/pravesh-toy-agent.out)):
 

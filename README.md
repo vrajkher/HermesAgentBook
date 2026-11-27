@@ -91,7 +91,13 @@ python3 labs/pravesh/toy_agent.py
 bash labs/run-all.sh
 ```
 
-અપેક્ષિત છેલ્લી line: `બધી labs પાસ.`
+Windows (PowerShell) પર, કે bash વગર ગમે ત્યાં:
+
+```powershell
+py labs\run_all.py
+```
+
+અપેક્ષિત છેલ્લી line: `બધી labs પાસ.` Windows પર Hermes install કરવાનાં પગલાં: [પ્રકરણ 0 — Windows પર](book/00-paayo-ane-pratham-run.md).
 
 ## પુસ્તક ચકાસવું (maintainers માટે)
 

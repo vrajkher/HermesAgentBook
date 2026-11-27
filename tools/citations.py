@@ -169,6 +169,21 @@ CITES = [
     ("doc-mcp-registers", D + "user-guide/features/mcp.md", "## How Hermes registers MCP tools", 7),
     ("doc-mcp-trust", D + "user-guide/features/mcp.md", "### Trust model", 9),
     ("doc-local-models", D + "user-guide/local-models.md", "    base_url: http://127.0.0.1:8081/v1", 2),
+    # --- Windows -------------------------------------------------------------------------
+    ("readme-windows", "README.md", "### Windows (native, PowerShell)", 18),
+    ("readme-uv", "README.md", "#### Windows Defender or antivirus flags `uv.exe` as malware", 3),
+    ("doc-win-quick", D + "user-guide/windows-native.md", "## Quick install", 9),
+    ("doc-win-msix", D + "user-guide/windows-native.md", "### MSIX / App Installer and Microsoft Store", 9),
+    ("doc-win-installer-steps", D + "user-guide/windows-native.md", "## What the source installer does", 10),
+    ("doc-win-gitbash", D + "user-guide/windows-native.md", "## How Hermes runs shell commands on Windows", 3),
+    ("doc-win-utf8", D + "user-guide/windows-native.md", "## UTF-8 console on Windows", 10),
+    ("win-stdio", "hermes_cli/stdio.py", "def configure_windows_stdio", 1),
+    ("doc-win-gateway", D + "user-guide/windows-native.md", "## Running the gateway at Windows login", 9),
+    ("doc-win-data", D + "user-guide/windows-native.md", "## Data layout", 9),
+    ("doc-win-path", D + "user-guide/windows-native.md", "### PATH after install", 10),
+    ("doc-win-uninstall", D + "user-guide/windows-native.md", "## Uninstall", 12),
+    ("doc-win-pitfalls", D + "user-guide/windows-native.md", "## Common pitfalls", 4),
+    ("doc-win-wsl", D + "user-guide/windows-native.md", ":::tip Want WSL instead?", 3),
 ]
 
 

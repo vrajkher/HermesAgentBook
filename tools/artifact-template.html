@@ -62,6 +62,10 @@ article blockquote p:last-child { margin-bottom: 0 }
 article code { font-family: var(--mono); font-size: .86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere }
 article pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; line-height: 1.55; margin: 0 0 1.2em }
 article pre code { background: none; padding: 0; font-size: .82em; overflow-wrap: normal }
+.codewrap { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; margin: 0 0 1.2em; min-width: 0 }
+.codewrap pre { width: 100%; min-width: 0; max-width: 100%; margin: 0; align-self: stretch }
+.copy { font: 600 12px var(--body); padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); cursor: pointer }
+.copy:hover { border-color: var(--marigold) }
 .tablewrap { overflow-x: auto; margin: 0 0 1.2em; border: 1px solid var(--line); border-radius: 8px; background: var(--surface) }
 table { border-collapse: collapse; width: 100%; font-size: .92em; line-height: 1.5 }
 th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line) }
@@ -169,6 +173,18 @@ td { font-variant-numeric: tabular-nums }
       var target = resolve(basePath, img.getAttribute('src'));
       if (DATA.images && DATA.images[target]) img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(DATA.images[target]);
       else img.remove();
+    });
+    root.querySelectorAll('pre > code').forEach(function (code) {
+      var pre = code.parentNode, b = document.createElement('button');
+      b.type = 'button'; b.className = 'copy'; b.textContent = 'Copy';
+      b.addEventListener('click', function () {
+        var text = code.textContent.replace(/\n$/, '');
+        function done(msg) { b.textContent = msg; setTimeout(function () { b.textContent = 'Copy'; }, 1500); }
+        function fallback() { var r = document.createRange(); r.selectNodeContents(code); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); done('Ctrl+C'); }
+        try { navigator.clipboard.writeText(text).then(function () { done('Copied'); }, fallback); } catch (e) { fallback(); }
+      });
+      var wrap = document.createElement('div'); wrap.className = 'codewrap';
+      pre.parentNode.insertBefore(wrap, pre); wrap.appendChild(b); wrap.appendChild(pre);
     });
     root.querySelectorAll('table').forEach(function (t) {
       var w = document.createElement('div'); w.className = 'tablewrap'; t.parentNode.insertBefore(w, t); w.appendChild(t);

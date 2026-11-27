@@ -6,6 +6,12 @@
 bash labs/run-all.sh
 ```
 
+Windows (PowerShell), કે bash વગર ગમે ત્યાં — એ જ outputs, અને Windows console માં ગુજરાતી સાચું:
+
+```powershell
+py labs\run_all.py
+```
+
 | Folder | પ્રકરણ | Hermes નો કયો નિયમ નાના રૂપમાં |
 |---|---|---|
 | `pravesh/` | પ્રવેશ | Agent loop |

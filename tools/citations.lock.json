@@ -786,6 +786,90 @@
    "start": 171,
    "end": 172,
    "needle": "    base_url: http://127.0.0.1:8081/v1"
+  },
+  "readme-windows": {
+   "path": "README.md",
+   "start": 43,
+   "end": 60,
+   "needle": "### Windows (native, PowerShell)"
+  },
+  "readme-uv": {
+   "path": "README.md",
+   "start": 72,
+   "end": 74,
+   "needle": "#### Windows Defender or antivirus flags `uv.exe` as malware"
+  },
+  "doc-win-quick": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 18,
+   "end": 26,
+   "needle": "## Quick install"
+  },
+  "doc-win-msix": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 51,
+   "end": 59,
+   "needle": "### MSIX / App Installer and Microsoft Store"
+  },
+  "doc-win-installer-steps": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 100,
+   "end": 109,
+   "needle": "## What the source installer does"
+  },
+  "doc-win-gitbash": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 155,
+   "end": 157,
+   "needle": "## How Hermes runs shell commands on Windows"
+  },
+  "doc-win-utf8": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 171,
+   "end": 180,
+   "needle": "## UTF-8 console on Windows"
+  },
+  "win-stdio": {
+   "path": "hermes_cli/stdio.py",
+   "start": 47,
+   "end": 47,
+   "needle": "def configure_windows_stdio"
+  },
+  "doc-win-gateway": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 218,
+   "end": 226,
+   "needle": "## Running the gateway at Windows login"
+  },
+  "doc-win-data": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 298,
+   "end": 306,
+   "needle": "## Data layout"
+  },
+  "doc-win-path": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 327,
+   "end": 336,
+   "needle": "### PATH after install"
+  },
+  "doc-win-uninstall": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 358,
+   "end": 369,
+   "needle": "## Uninstall"
+  },
+  "doc-win-pitfalls": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 391,
+   "end": 394,
+   "needle": "## Common pitfalls"
+  },
+  "doc-win-wsl": {
+   "path": "website/docs/user-guide/windows-native.md",
+   "start": 14,
+   "end": 16,
+   "needle": ":::tip Want WSL instead?"
   }
  }
 }
